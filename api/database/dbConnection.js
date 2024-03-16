@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
 
-const MONGO="mongodb+srv://amenguda:1234@cluster0.gbjwmvi.mongodb.net/Road"
-
 export const dbConnection = () => {
   mongoose
-    .connect(MONGO, {
+    .connect(process.env.MONGO_URI, {
       dbName: "MERN_JOB_SEEKING_WEBAPP",
     })
     .then(() => {
