@@ -20,16 +20,16 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
   const {
     title,
     description,
-    category,
     country,
     city,
+    category,
     location,
     fixedSalary,
     salaryFrom,
     salaryTo,
   } = req.body;
 
-  if (!title || !description || !category || !country || !city || !location) {
+  if (!title || !description || !category || !location || !country || !city) {
     return next(new ErrorHandler("Please provide full job details.", 400));
   }
 
@@ -51,9 +51,9 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
   const job = await Job.create({
     title,
     description,
-    category,
     country,
     city,
+    category,
     location,
     fixedSalary,
     salaryFrom,
@@ -138,3 +138,5 @@ export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler(`Invalid ID / CastError`, 404));
   }
 });
+
+
