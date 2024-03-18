@@ -136,3 +136,22 @@ export const jobseekerDeleteApplication = catchAsyncErrors(
     });
   }
 );
+
+
+// Route handler to get all applications
+export const getAllApplications = async (req, res) => {
+  try {
+    const applications = await Application.find();
+    res.status(200).json({
+      success: true,
+      count: applications.length,
+      applications: applications,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
