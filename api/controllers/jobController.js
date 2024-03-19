@@ -4,11 +4,16 @@ import ErrorHandler from "../middlewares/error.js";
 
 export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
   const jobs = await Job.find({ expired: false });
+  const totalJobsCount = await Job.countDocuments( {expired: false });
   res.status(200).json({
     success: true,
     jobs,
+    totalJobs: totalJobsCount,
   });
 });
+
+
+import { v4 as uuidv4 } from 'uuid';
 
 export const postJob = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
@@ -48,6 +53,11 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
     );
   }
   const postedBy = req.user._id;
+  
+  // Generate a unique transaction reference (tx_ref) based on job title and UUID
+  const tx_ref = `${title.replace(/\s+/g, '-').toLowerCase()}-${uuidv4()}`;
+
+  // Create the job with the generated tx_ref
   const job = await Job.create({
     title,
     description,
@@ -58,14 +68,18 @@ export const postJob = catchAsyncErrors(async (req, res, next) => {
     fixedSalary,
     salaryFrom,
     salaryTo,
+    tx_ref, // Assign the generated tx_ref
     postedBy,
   });
+  
   res.status(200).json({
     success: true,
     message: "Job Posted Successfully!",
     job,
   });
 });
+
+
 
 export const getMyJobs = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
@@ -75,6 +89,7 @@ export const getMyJobs = catchAsyncErrors(async (req, res, next) => {
     );
   }
   const myJobs = await Job.find({ postedBy: req.user._id });
+  // console.log(myJobs)
   res.status(200).json({
     success: true,
     myJobs,
@@ -139,4 +154,16 @@ export const getSingleJob = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+
+export const getTotalJobs = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const totalJobsCount = await Job.countDocuments();
+    res.status(200).json({
+      success: true,
+      totalJobs: totalJobsCount,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
 
