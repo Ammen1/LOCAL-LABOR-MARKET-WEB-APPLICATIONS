@@ -64,3 +64,86 @@ export const getUser = catchAsyncErrors((req, res, next) => {
     user,
   });
 });
+export const deleteUser = catchAsyncErrors(async (req, res, next) => {
+  const userId = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return next(new ErrorHandler("Invalid user ID", 400));
+  }
+
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Failed to delete user", 500));
+  }
+});
+
+
+
+export const getUsers = catchAsyncErrors(async (req, res, next) => {
+  const user = req.user;
+  const totalUsersCount = await User.countDocuments();
+
+  res.status(200).json({
+    success: true,
+    user,
+    totalUsers: totalUsersCount,
+  });
+});
+
+
+export const getUserss = catchAsyncErrors(async (req, res, next) => {
+  const users = await User.find();
+
+  res.status(200).json({
+    success: true,
+    users: users,
+  });
+});
+
+
+
+export const getjobSeeker = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const jobSeekerUsers = await User.find({ role: "Job Seeker" });
+    const jobSeekerUsersCount = await User.countDocuments({ role: "Job Seeker" });
+
+    res.status(200).json({
+      success: true,
+      jobSeekerUsers,
+      totalJobSeekerUsers: jobSeekerUsersCount,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
+
+
+export const getEmployees = catchAsyncErrors(async (req, res, next) => {
+  try {
+    const Employees = await User.find({ role: "Employer" });
+    const totalEmployeesCount = await User.countDocuments({ role: "Employer" });
+
+    res.status(200).json({
+      success: true,
+      Employees,
+      totalEmployees: totalEmployeesCount ,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+});
