@@ -3,7 +3,46 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_EXPIRE='1h'
+const JWT_EXPIRE='1h';
+
+const reviewSchema = new mongoose.Schema({
+  applicantID: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["Job Seeker"],
+      required: true,
+    },
+  },
+  employerID: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["Employer"],
+      required: true,
+    },
+  },
+  rating: {
+    type: Number,
+    required: true
+  },
+  comment: {
+    type: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -36,6 +75,7 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] // Reference to reviews
 });
 
 
@@ -60,3 +100,4 @@ userSchema.methods.getJWTToken = function () {
 };
 
 export const User = mongoose.model("User", userSchema);
+export const Review = mongoose.model("Review", reviewSchema);
