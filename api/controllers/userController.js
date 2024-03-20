@@ -1,5 +1,5 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
-import { User } from "../models/userSchema.js";
+import { User, Review } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import { sendToken } from "../utils/jwtToken.js";
 
@@ -145,5 +145,84 @@ export const getEmployees = catchAsyncErrors(async (req, res, next) => {
       success: false,
       message: "Internal Server Error",
     });
+  }
+});
+
+
+
+
+// Controller function to create a new review
+export const createReview = catchAsyncErrors(async (req, res) => {
+  try {
+    const review = new Review({
+      applicantID: {
+        user: req.body.applicantID.user,
+        role: req.body.applicantID.role
+      },
+      employerID: {
+        user: req.body.employerID.user,
+        role: req.body.employerID.role
+      },
+      rating: req.body.rating,
+      comment: req.body.comment
+    });
+    const savedReview = await review.save();
+    res.status(201).json(savedReview);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Controller function to get all reviews
+export const getAllReviews = catchAsyncErrors(async (req, res) => {
+  try {
+    const reviews = await Review.find();
+    res.json(reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Controller function to get a review by ID
+export const getReviewById = catchAsyncErrors(async (req, res) => {
+  try {
+    const review = await Review.findById(req.params.id);
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json(review);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Controller function to update a review by ID
+export const updateReviewById =catchAsyncErrors( async (req, res) => {
+  try {
+    const updatedReview = await Review.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json(updatedReview);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Controller function to delete a review by ID
+export const deleteReviewById =  catchAsyncErrors(async (req, res) => {
+  try {
+    const deletedReview = await Review.findByIdAndDelete(req.params.id);
+    if (!deletedReview) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    res.json({ message: 'Review deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
