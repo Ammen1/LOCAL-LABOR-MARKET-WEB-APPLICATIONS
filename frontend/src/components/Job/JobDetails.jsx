@@ -81,7 +81,7 @@ const JobDetails = () => {
             {user && user.role !== "Employer" && (
               <Link
                 to={`/application/${job._id}`}
-                className="inline-block mt-4 px-4 py-2 bg-blue-500 text-white rounded-md transition duration-300 hover:bg-blue-600"
+                className="inline-block mt-4 px-4 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300 hover:bg-blue-600 text-center"
               >
                 Apply Now
               </Link>
