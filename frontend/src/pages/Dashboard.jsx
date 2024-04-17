@@ -7,6 +7,7 @@ import DashSidebar from "../components/DashSibar";
 import DashboardComp from "../components/DashboardComp";
 import DashCreateAccount from "../components/DashCreateAccount";
 import DashUsers from "../components/DashUsers";
+import AdminReviews from "../components/AdminReviews.jsx";
 // import Expenses from "../components/Expenses";
 // import CreateProject from "./CreateProjects";
 
@@ -30,6 +31,7 @@ export default function Dashboard() {
       {tab === "createaccount" && <DashCreateAccount />}
       {tab === "users" && <DashUsers />}   
       {tab === "dash" && <DashboardComp />}
+      {tab === "reviews" && <AdminReviews />}
 
     </div>
   );
