@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { User, Review } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import { sendToken } from "../utils/jwtToken.js";
+import mongoose from 'mongoose';
 
 export const register = catchAsyncErrors(async (req, res, next) => {
   const { name, email, phone, password, role } = req.body;
@@ -65,14 +66,14 @@ export const getUser = catchAsyncErrors((req, res, next) => {
   });
 });
 export const deleteUser = catchAsyncErrors(async (req, res, next) => {
-  const userId = req.params.id;
+  const id = req.params.id;
 
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     return next(new ErrorHandler("Invalid user ID", 400));
   }
 
   try {
-    const user = await User.findByIdAndDelete(userId);
+    const user = await User.findByIdAndDelete(id);
     if (!user) {
       return next(new ErrorHandler("User not found", 404));
     }
@@ -82,10 +83,10 @@ export const deleteUser = catchAsyncErrors(async (req, res, next) => {
       message: "User deleted successfully",
     });
   } catch (error) {
+    console.log(error)
     return next(new ErrorHandler("Failed to delete user", 500));
   }
 });
-
 
 
 export const getUsers = catchAsyncErrors(async (req, res, next) => {
@@ -177,7 +178,9 @@ export const createReview = catchAsyncErrors(async (req, res) => {
 // Controller function to get all reviews
 export const getAllReviews = catchAsyncErrors(async (req, res) => {
   try {
-    const reviews = await Review.find();
+    const reviews = await Review.find()
+      .populate('applicantID.user', 'name')
+      .populate('employerID.user', 'name');
     res.json(reviews);
   } catch (error) {
     console.error(error);
@@ -185,10 +188,13 @@ export const getAllReviews = catchAsyncErrors(async (req, res) => {
   }
 });
 
+
 // Controller function to get a review by ID
 export const getReviewById = catchAsyncErrors(async (req, res) => {
   try {
-    const review = await Review.findById(req.params.id);
+    const review = await Review.findById(req.params.id)
+    .populate('applicantID.user', 'name')
+    .populate('employerID.user', 'name');;
     if (!review) {
       return res.status(404).json({ error: 'Review not found' });
     }
