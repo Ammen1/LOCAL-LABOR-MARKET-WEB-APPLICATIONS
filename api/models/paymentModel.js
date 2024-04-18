@@ -21,6 +21,10 @@ const transactionSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  callback_url: {
+    type: String,
+    require: true
+  },
   tx_ref: {
     type: String,
     required: true
