@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../../main";
 import { Button, Spinner } from "flowbite-react";
 import debounce from 'lodash/debounce'; 
+import { FaSearch } from "react-icons/fa";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -63,15 +64,17 @@ const Jobs = () => {
     <section className="mt-20 flex justify-center items-center ">
       <div className="mx-auto ">
         <div size="2xl" className="text-center text-3xl mb-6 font-bold"> Book Your Next Task</div>
-        <div className="mb-4 border font-bold  w-full">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Describe One Task... for example, fix hole in my wall..."
-            className=" border-green-800 p-2 w-full font-bold "
-          />
-        </div>
+        <div className="mb-4 border font-bold w-full flex items-center">
+        <FaSearch className="  text-green-950" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Describe One Task... for example, fix hole in my wall..."
+          className="border-green-800 p-2 w-full font-bold outline-none"
+        />
+       
+      </div>
         {loading ? (
           <div className="flex justify-center items-center h-64 ">
             <Spinner color="blue" />
@@ -80,11 +83,11 @@ const Jobs = () => {
           <div className="text-red-600 text-center">{error}</div>
         ) : (
           <>
-            <div className="grid grid-cols-1 text-green-700 sm:grid-cols-2 lg:grid-cols-4 gap-1 justify-center items-center">
+            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-4 gap-1 justify-center items-center">
               {currentJobs.map((job) => (
                 <Link to={`/job/${job._id}`} key={job._id}>
-                  <Button outline className="w-56 p-2 font-bold bg-white ">
-                    {job.title}  
+                  <Button outline className="w-56 border font-bold  ">
+                    <span className=" text-green-500">{job.title}</span> 
                   </Button>
                 </Link>
               ))}
