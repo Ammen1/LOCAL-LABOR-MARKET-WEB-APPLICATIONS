@@ -3,7 +3,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-const JWT_EXPIRE='1h';
+const JWT_EXPIRE='10h';
 
 const reviewSchema = new mongoose.Schema({
   applicantID: {
