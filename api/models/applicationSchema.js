@@ -27,11 +27,11 @@ const applicationSchema = new mongoose.Schema({
   },
   resume: {
     public_id: {
-      type: String, 
+      type: String,
       required: true,
     },
     url: {
-      type: String, 
+      type: String,
       required: true,
     },
   },
@@ -57,6 +57,31 @@ const applicationSchema = new mongoose.Schema({
       type: String,
       enum: ["Employer"],
       required: true,
+    },
+  },
+  status: {
+    type: String,
+    enum: ["Pending", "Accepted", "Rejected"],
+    default: "Pending",
+  },
+  rejectedBy: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    role: {
+      type: String,
+      enum: ["Employer"],
+    },
+  },
+  acceptedBy: {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    role: {
+      type: String,
+      enum: ["Employer"],
     },
   },
 });
