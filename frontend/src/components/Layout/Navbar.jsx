@@ -28,8 +28,8 @@ const Navbar = () => {
   };
 
   return (
-    <BrowiserNav className={`bg-blue-700 space-x-5 ${isAuthorized ? "block" : "hidden"}`}>
-      <div className="container mx-auto flex justify-between items-center">
+    <BrowiserNav className={`bg-blue-700 space-x-5  ${isAuthorized ? "block" : "hidden"}`}>
+      <div className="container mx-auto flex justify-between items-center ml-4 p-4">
         <div className="flex items-center ">
         <Link
         to="/"
@@ -81,7 +81,7 @@ const Navbar = () => {
             </>
           )}
           <li>
-            <Button gradientDuoTone="purpleToBlue" className=" p-1"  onClick={handleLogout}>
+            <Button gradientDuoTone="purpleToBlue"  className="  mr-6"  onClick={handleLogout}>
               Sign out
             </Button>
           </li>
