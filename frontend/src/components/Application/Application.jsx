@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../main";
@@ -12,6 +12,7 @@ const Application = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [resume, setResume] = useState(null);
+  const [reviews, setReviews] = useState([]); // New state to store reviews
 
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
@@ -23,6 +24,24 @@ const Application = () => {
     setResume(resume);
   };
 
+  // Fetch reviews when the component mounts
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/api/v1/user/reviews`, {
+          withCredentials: true,
+        });
+        console.log(response)
+        setReviews(response.data);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+        setReviews([]);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
   const handleApplication = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -33,6 +52,13 @@ const Application = () => {
     formData.append("coverLetter", coverLetter);
     formData.append("resume", resume);
     formData.append("jobId", id);
+    // Append reviews to the form data
+    reviews.forEach((review, index) => {
+      formData.append(`review[${index}][applicantID]`, review.applicantID);
+      formData.append(`review[${index}][employerID]`, review.employerID);
+      formData.append(`review[${index}][rating]`, review.rating);
+      formData.append(`review[${index}][comment]`, review.comment);
+    });
 
     try {
       const { data } = await axios.post(
@@ -53,6 +79,7 @@ const Application = () => {
       setResume("");
       toast.success(data.message);
       navigateTo("/job/getall");
+      
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -112,41 +139,41 @@ const Application = () => {
             />
           </div>
           <div className="flex flex-col items-center justify-center pb-6 pt-5 ">
-  <label
-    htmlFor="resume"
-    className="mb-4 flex flex-col items-center justify-center cursor-pointer border-8 w-full bg-white"
-  >
-    <svg
-      className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 20 16"
-    >
-      <path
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-      />
-    </svg>
-    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-      <span className="font-semibold">Click to upload</span> or drag and drop
-    </p>
-    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-    <input
-      id="resume"
-      type="file"
-      accept=".pdf, .jpg, .png"
-      onChange={handleFileChange}
-      className="hidden"
-    />
-  </label>
-  </div>
-    <Button type="submit" className=" bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 w-full text-white py-2 px-4 rounded-md transition duration-300">Send Application</Button>
-    </form>
-    </div>
+            <label
+              htmlFor="resume"
+              className="mb-4 flex flex-col items-center justify-center cursor-pointer border-8 w-full bg-white"
+            >
+              <svg
+                className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                />
+              </svg>
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="font-semibold">Click to upload</span> or drag and drop
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+              <input
+                id="resume"
+                type="file"
+                accept=".pdf, .jpg, .png"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </label>
+          </div>
+          <Button type="submit" className=" bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 w-full text-white py-2 px-4 rounded-md transition duration-300">Send Application</Button>
+        </form>
+      </div>
     </section>
   );
 };
