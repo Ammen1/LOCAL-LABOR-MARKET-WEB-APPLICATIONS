@@ -192,13 +192,16 @@ export const getAllReviews = catchAsyncErrors(async (req, res) => {
 // Controller function to get a review by ID
 export const getReviewById = catchAsyncErrors(async (req, res) => {
   try {
-    const review = await Review.findById(req.params.id)
-    .populate('applicantID.user', 'name')
-    .populate('employerID.user', 'name');;
-    if (!review) {
-      return res.status(404).json({ error: 'Review not found' });
+    const jobSeekerId = req.params.jobSeekerId; // Extract the applicantId from the route parameters
+    const reviews = await Review.find({ 'applicantID.user': jobSeekerId })
+      .populate('applicantID.user', 'name')
+      .populate('employerID.user', 'name');
+    
+    if (reviews.length === 0) {
+      return res.status(404).json({ error: 'Reviews not found for the specified applicantID' });
     }
-    res.json(review);
+    
+    res.json(reviews);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
