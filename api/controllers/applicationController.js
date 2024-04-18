@@ -155,3 +155,44 @@ export const getAllApplications = async (req, res) => {
     });
   }
 };
+
+
+// Accept an application
+export const acceptApplication = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+  const application = await Application.findByIdAndUpdate(
+    id,
+    { status: "Accepted" }, // Assuming 'status' is a field in your application schema
+    { new: true }
+  );
+
+  if (!application) {
+    return next(new ErrorHandler("Application not found!", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Application accepted successfully",
+    application,
+  });
+});
+
+// Reject an application
+export const rejectApplication = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+  const application = await Application.findByIdAndUpdate(
+    id,
+    { status: "Rejected" }, // Assuming 'status' is a field in your application schema
+    { new: true }
+  );
+
+  if (!application) {
+    return next(new ErrorHandler("Application not found!", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Application rejected successfully",
+    application,
+  });
+});
