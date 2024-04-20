@@ -7,6 +7,7 @@ import {
   getAllApplications,
   acceptApplication,
   rejectApplication,
+  paymentApproval,
 } from "../controllers/applicationController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
@@ -19,5 +20,6 @@ router.delete("/delete/:id", isAuthenticated, jobseekerDeleteApplication);
 router.get("/applications", getAllApplications);
 router.put("/applications/:id/accept", acceptApplication);
 router.put("/applications/:id/reject", rejectApplication);
+router.put("/applications/:id/paymentApproval", paymentApproval )
 
 export default router;
