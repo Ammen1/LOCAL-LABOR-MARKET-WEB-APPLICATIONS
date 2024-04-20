@@ -84,6 +84,11 @@ const applicationSchema = new mongoose.Schema({
       enum: ["Employer"],
     },
   },
+  paymentApproval: {
+    type: String,
+    enum: ["Pending", "Completed"],
+    default: "Pending",
+  },
 });
 
 export const Application = mongoose.model("Application", applicationSchema);
