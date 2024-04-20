@@ -20,20 +20,20 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="heroSection bg-slate-50 py-20">
+    <div className="heroSection bg-gradient-to-r from-slate-50 to-purple-400 via-slate-200 py-20">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="w-full lg:w-1/2">
           <div className="title mb-8">
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-2xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
               Find a job that suits
             </h1>
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
-              {text.join("")}
-            </h1>
-            <p className="text-gray-700 text-lg">
-            We would like to extend our heartfelt appreciation to our esteemed advisors at Jimma University 
-            Mr. Temesgen D. and Dr. Getachew M. for their unwavering guidance, invaluable insights, and 
-            
+            <h2 className="text-2xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+              {/* {text.join("")} */}
+              your interests and skills
+            </h2>
+            <p className="text-gray-700 text-sm">
+              We would like to extend our heartfelt appreciation to our esteemed advisors at Jimma University,
+              Mr. Temesgen D. and Dr. Getachew M., for their unwavering guidance and invaluable insights.
             </p>
           </div>
           <div className="flex space-x-4">
@@ -51,9 +51,10 @@ const HeroSection = () => {
             </button>
           </div>
         </div>
-        <div className="w-full lg:w-1/2 mt-6 lg:mt-0">
-          <img src="/product.png" alt="hero" className="w-full" />
-        </div>
+        <div className="w-full lg:w-1/2">
+        <img src="/product.jpg" alt="hero" className="object-cover w-full h-auto lg:h-full animate-pulse" />
+      </div>
+
       </div>
     </div>
   );
