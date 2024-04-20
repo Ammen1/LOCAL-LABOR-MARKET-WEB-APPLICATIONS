@@ -44,15 +44,15 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-100 to-purple-500 via-slate-200 bg-center" >
       <section className="container px-4 py-8 mx-auto">
         <div className="max-w-lg mx-auto bg-inherit shadow-md rounded-lg overflow-hidden">
           <div className="p-4">
-            <h3 className="text-3xl font-semibold text-white mb-8 text-center">Login to your account</h3>
-            <form className=" bg-transparent shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h3 className="text-3xl font-semibold text-black mb-8 text-center">Login to your account</h3>
+            <form className="text-black   rounded px-8 pt-6 pb-8 mb-4">
               <div className="mb-4">
-                <label htmlFor="role" className="block text-sm font-medium text-white">Login As</label>
-                <div className="relative mt-1">
+                <label htmlFor="role" className="block text-sm font-medium text-black">Login As</label>
+                <div className="relative mt-1 text-black">
                   <select
                     id="role"
                     value={role}
@@ -68,12 +68,12 @@ const Login = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-white">Email Address</label>
+                <label htmlFor="email" className="block text-sm font-medium text-black">Email Address</label>
                 <div className="relative mt-1">
                   <input
                     type="email"
                     id="email"
-                    placeholder="zk@gmail.com"
+                    placeholder="amen@amen.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
@@ -82,7 +82,7 @@ const Login = () => {
                 </div>
               </div>
               <div className="mb-4">
-                <label htmlFor="password" className="block text-sm font-medium text-white">Password</label>
+                <label htmlFor="password" className="block text-sm font-medium text-black">Password</label>
                 <div className="relative mt-1">
                   <input
                     type="password"
@@ -98,11 +98,11 @@ const Login = () => {
               <Button
                 type="submit"
                 onClick={handleLogin}
-                className="w-full bg-gradient-to-r from-purple-900 to-pink-900 via-indigo-900 text-white p-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+                className="w-full bg-gradient-to-r from-purple-900 to-pink-900 via-indigo-900 text-teal-50 p-1"
               >
                 Login
               </Button>
-              <Link to={"/register"} className="block text-center mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+              <Link to={"/register"} className="block text-center mt-4 text-sm font-semibold text-black hover:text-indigo-500">
                 Register Now
               </Link>
             </form>
