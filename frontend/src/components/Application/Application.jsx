@@ -90,9 +90,9 @@ const Application = () => {
   }
 
   return (
-    <section className="bg-gray-100 py-12 w-full">
-      <div className=" mx-auto px-4">
-        <h3 className="text-3xl text-gray-800 font-semibold mb-6 text-center">Application Form</h3>
+    <section className="bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 py-12 w-full">
+      <div className=" mx-auto px-4 ">
+        <h3 className="text-3xl text-gray-800 font-semibold mb-6 text-center ">Application Form</h3>
         <form onSubmit={handleApplication} className="max-w-md mx-auto">
           <div>
             <input
