@@ -182,7 +182,7 @@ export const rejectApplication = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const application = await Application.findByIdAndUpdate(
     id,
-    { status: "Rejected" }, // Assuming 'status' is a field in your application schema
+    { status: "Rejected" }, 
     { new: true }
   );
 
@@ -193,6 +193,26 @@ export const rejectApplication = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Application rejected successfully",
+    application,
+  });
+});
+
+// Accept an application
+export const paymentApproval = catchAsyncErrors(async (req, res, next) => {
+  const { id } = req.params;
+  const application = await Application.findByIdAndUpdate(
+    id,
+    { paymentApproval: "Completed" }, 
+    { new: true }
+  );
+
+  if (!application) {
+    return next(new ErrorHandler("Application not found!", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Application paymentApproval successfully",
     application,
   });
 });
