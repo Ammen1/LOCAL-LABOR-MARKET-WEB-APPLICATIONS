@@ -23,6 +23,12 @@ const MyApplications = () => {
   const [jobSeekerId, setJobSeekerId] = useState("");
   const [jobSeekerData, setJobSeekerData] = useState(null);
   const [showJobSeekerDetails, setShowJobSeekerDetails] = useState(false);
+  const [showFullCoverLetter, setShowFullCoverLetter] = useState(false);
+
+  const toggleCoverLetterVisibility = () => {
+    setShowFullCoverLetter(!showFullCoverLetter);
+  };
+
 
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
@@ -65,10 +71,10 @@ useEffect(() => {
 
   useEffect(() => {
     try {
-      // if (!isAuthorized) {
-      //   navigateTo("/");
-      //   return;
-      // }
+      if (!isAuthorized) {
+        navigateTo("/");
+        return;
+      }
 
       const fetchApplications = async () => {
         let endpoint;
@@ -149,6 +155,16 @@ useEffect(() => {
     }
   };
 
+  const paymentApproval = async (id) => {
+    try {
+      const response = await axios.put(`http://localhost:4000/api/v1/application/applications/${id}/paymentApproval`);
+      console.log(response.data);
+      toast.success("Application paymentApproval successfully!");
+    } catch (error) {
+      toast.error("Failed to paymentApproval application. Please try again.");
+    }
+  };
+
   const getStatusMessage = (application) => {
     if (user && user.role === "Job Seeker") {
       if (application.status === "Rejected") {
@@ -162,9 +178,9 @@ useEffect(() => {
   };
 
   return (
-    <section className="page w-full gap-20">
-      <Card className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">
+    <section className="page w-full gap-20 bg-gradient-to-b from-slate-50 to-purple-100 via-slate-200">
+      <div className="container mx-auto px-4 py-8 bg-gradient-to-r from-white to-zinc-100 via-slate-500">
+        <h1 className="text-3xl font-bold text-center mb-8 text-white">
           {user && user.role === "Job Seeker"
             ? "My Applications"
             : "Applications From Job Seekers"}
@@ -173,24 +189,38 @@ useEffect(() => {
           {applications.map((application) => (
             <div key={application._id} className="bg-white rounded-lg shadow-lg overflow-hidden w-full mb-8">
               <div className="p-6 w-full">
+              <div className="border shadow-lg w-44 h-44 rounded-full gap-20 justify-center items-center  mt-8 bg-gradient-to-r from-stone-100 to-lime-100 via-white">
+                  <img
+                    src={application.resume.url}
+                    alt="Resume"
+                    className="cursor-pointer  rounded-full"
+                    onClick={() => openModal(application.resume.url)}
+                  />
+                  </div>
               <div className="mb-4 leading-7 flex items-center gap-9">
                 <div className="flex-1">
-                  <h2 className="text-lg font-bold mb-2">Name: {application.name}</h2>
-                  <Card className="bg-gradient-to-r from-cyan-900 to-pink-900 via-red-800 text-4xl text-white">{getStatusMessage(application)}</Card>
+                <h2 className="text-lg font-bold ml-10  mb-2"> <span className=" bg-gradient-to-tl  from-slate-100 to-purple-500 via-slate-100">{application.name}</span></h2>
+                  <div className="  text-4xl text-black">{getStatusMessage(application)}</div>
                   <div className="text-sm">
-                <Card className="bg-gradient-to-r from-slate-50 to-neutral-100 via-slate-50 p-4 mb-4 rounded-md">
-                  <FaEnvelope icon="envelope" className="mr-2 text-lg text-primary" /><span>{application.email}</span>
-                  <FaPhone icon="phone" className="mr-2 text-lg text-primary" />
-                  <span>{application.phone}</span>               
-                  <FaMapMarkerAlt icon="map-marker" className="mr-2 text-lg text-primary" />
-                  <span>{application.address}</span>
-                  <span className="text-sm">Cover Letter: {application.coverLetter.slice(0, 200)}</span>
-                </Card>
+                <div className=" p-4 mb-4 rounded-md flex gap-5">
+                  <FaEnvelope icon="envelope" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100 " /><span>{application.email}</span><br />
+                  <FaPhone icon="phone" className="mr-2 text-lg bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.phone}</span> <br />              
+                  <FaMapMarkerAlt icon="map-marker" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.address}</span><br />
+                  
+                </div>
+                <p className="text-sm bg-gradient-to-br from-white to-neutral-50 via-white">
+                {showFullCoverLetter ?application. coverLetter : `${application.coverLetter.slice(0, 400)}...`}
+                {!showFullCoverLetter && (
+                  <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline ml-1">
+                    Read More
+                  </button>
+                )}
+              </p>
               </div>
               </div>
-              <div className="ml-4 w-18 h-16 rounded-full border-2 self-center">
+              {/* <div className="ml-4 w-18 h-16 rounded-full self-center">
                 <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
-              </div>
+              </div> */}
               </div>
                 <div className=" justify-between w-full items-center gap-5 space-x-reverse">
                   {user && user.role === "Job Seeker" && (
@@ -221,50 +251,51 @@ useEffect(() => {
                         onClick={() => handleReviewClick(application.applicantID)} // Pass applicantID
                         className="bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300  cursor-pointer"
                       >
-                        View Reviews
+                        Give Reviews
+                      </Button>
+                      <Button // Change to Card component
+                        onClick={() => paymentApproval(application._id)} // Pass applicantID
+                        className="bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300  cursor-pointer"
+                      >
+                        Approve Payment
                       </Button>
                     </div>
                   )}
-                <div className="border shadow-lg rounded-md  mt-8">
-                    <img
-                      src={application.resume.url}
-                      alt="Resume"
-                      className="cursor-pointer w-24 h-24 object-cover"
-                      onClick={() => openModal(application.resume.url)}
-                    />
-                  </div>
+
                 </div>
-                <div className="bg-gradient-to-r mt-10 border-2 from-slate-300 to-purple-50 via-gray-50">
+                <div className="bg-gradient-to-r mt-10  from-slate-300 to-purple-50 via-gray-50">
                 <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {reviews && reviews.length > 0 ? (
                   reviews.map((review, index) => (
                     // Check if both user and review.applicantID.user are defined and their IDs match
                     user && user._id && review.applicantID && review.applicantID.user && user._id === review.applicantID.user._id && (
                       <li key={index}>
-                        <div className="rounded-full border-2 self-center space-x-6 flex">
+                        <div className="rounded-full s space-x-6 flex">
                           <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
-                          <span className="mt-5 text-2xl">{review.applicantID.user.name}</span>
+                          <span className="mt-5 text-2xl">{review.applicantID.user.name}</span><br /> 
                         </div>
-                        <span><strong>Tasker Provider name:</strong> {review.employerID.user.name}</span>
-                        <span><strong>Comment:</strong> {review.comment.slice(0, 100)}   </span>
-
-                    
-                      </li>
+                        <span><strong>Tasker Provider name { " " }</strong> {review.employerID.user.name}</span><br /> 
+                        <p className=" text-sm">
+                        {showFullCoverLetter ?review.comment : `${review.comment.slice(0, 400)}...`}
+                        {!showFullCoverLetter && (
+                        <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline ml-1">
+                          Read More
+                        </button>
+                        )}
+                        </p>
+                        </li>
                     )
                   ))
                 ) : (
                   <li>No reviews available</li>
                 )}
               </ul>
-
-
-
               </div>
               </div>
             </div>
           ))}
         </div>
-      </Card>
+      </div>
 
       {modalOpen && <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />}
       {showReviewModal && (
@@ -285,7 +316,7 @@ const ApplicationCard = ({ application, deleteApplication, openModal, handleRevi
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full">
       <div className="p-6">
-      <Card className="mb-4 leading-7 flex items-center">
+      <div className="mb-4 leading-7 flex items-center">
       <div className="flex-1">
         <h2 className="text-lg font-bold mb-2">
           Name: {application.name}
@@ -306,17 +337,17 @@ const ApplicationCard = ({ application, deleteApplication, openModal, handleRevi
       <div className="ml-4 w-18 h-16 rounded-full border-2 self-center ">
         <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
       </div>
-    </Card>
+    </div>
 
         <div className="flex justify-between w-full items-center gap-5">
-        <Card className="border shadow-lg rounded-md overflow-hidden">
+        <div className="border shadow-lg rounded-md overflow-hidden">
           <img
             src={application.resume.url}
             alt="Resume"
             className="cursor-pointer w-24 h-24 object-cover"
             onClick={() => openModal(application.resume.url)}
           />
-        </Card>
+        </div>
       </div>
         {user && user.role === "Job Seeker" && (
             <Button
