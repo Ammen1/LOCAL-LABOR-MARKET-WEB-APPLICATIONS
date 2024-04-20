@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const transactionSchema = new mongoose.Schema({
+  job: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Job",
+  },
   email: {
     type: String,
     required: true
@@ -23,7 +27,7 @@ const transactionSchema = new mongoose.Schema({
   },
   callback_url: {
     type: String,
-    require: true
+    required: true 
   },
   tx_ref: {
     type: String,
@@ -36,10 +40,8 @@ const transactionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: 'pending' // Default status can be set to 'pending'
+    default: 'pending'
   }
 });
 
 export const Transaction = mongoose.model('Transaction', transactionSchema);
-
-
