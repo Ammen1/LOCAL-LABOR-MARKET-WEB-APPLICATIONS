@@ -53,16 +53,16 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cover bg-center" style={{ backgroundImage: `url(${backgroundImage1})` }}>
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-purple-500 via-slate-200  bg-center" >
       <section className="flex items-center justify-center">
         <div className="container px-4 py-8 mx-auto fadeIn">
           <div className="max-w-lg mx-auto bg-inherit shadow-md rounded-lg overflow-hidden">
             <div className="p-4">
-              <h3 className="text-3xl font-semibold text-white mb-8 text-center">Create a new account</h3>
+              <h3 className="text-3xl font-semibold text-black mb-8 text-center">Create a new account</h3>
               <form>
                 <div className="mb-4">
-                  <label htmlFor="role" className="block text-sm font-medium text-white">Register As</label>
-                  <div className="relative mt-1">
+                  <label htmlFor="role" className="block text-sm font-medium text-black">Register As</label>
+                  <div className="relative mt-1 to-black">
                     <select
                       id="role"
                       value={role}
@@ -78,7 +78,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="name" className="block text-sm font-medium text-white">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-black">Name</label>
                   <div className="relative mt-1">
                     <input
                       type="text"
@@ -86,13 +86,13 @@ const Register = () => {
                       placeholder="Abush"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                      className="form-input block w-full pl-3 pr-10 py-2 text-base text-black border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
                     />
                     <FaPencilAlt className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="email" className="block text-sm font-medium text-white">Email Address</label>
+                  <label htmlFor="email" className="block text-sm font-medium text-black">Email Address</label>
                   <div className="relative mt-1">
                     <input
                       type="email"
@@ -100,18 +100,18 @@ const Register = () => {
                       placeholder="amen@gmail.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                      className="form-input block w-full pl-3 pr-10 text-black py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
                     />
                     <MdOutlineMailOutline className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="phone" className="block text-sm font-medium text-white">Phone Number</label>
+                  <label htmlFor="phone" className="block text-sm font-medium text-black">Phone Number</label>
                   <div className="relative mt-1">
                     <input
                       type="number"
                       id="phone"
-                      placeholder="09443654"
+                      placeholder="0944365493"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
@@ -120,7 +120,7 @@ const Register = () => {
                   </div>
                 </div>
                 <div className="mb-4">
-                  <label htmlFor="password" className="block text-sm font-medium text-white">Password</label>
+                  <label htmlFor="password" className="block text-sm font-medium text-black">Password</label>
                   <div className="relative mt-1">
                     <input
                       type="password"
@@ -134,13 +134,14 @@ const Register = () => {
                   </div>
                 </div>
                 <Button
+                 
                   type="submit"
                   onClick={handleRegister}
-                  className="w-full bg-gradient-to-r from-purple-900 to-pink-900 via-indigo-900 text-white p-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700"
+                  className="w-full bg-gradient-to-r from-purple-900 to-pink-900 via-indigo-900 text-teal-50 p-1 "
                 >
                   Register
                 </Button>
-                <Link to={"/login"} className="block text-center mt-4 text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+                <Link to={"/login"} className="block text-center mt-4 text-sm font-semibold text-black hover:text-indigo-500">
                   Login Now
                 </Link>
               </form>
