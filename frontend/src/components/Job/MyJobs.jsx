@@ -4,8 +4,9 @@ import toast from "react-hot-toast";
 import { FaEdit, FaTrashAlt, FaCheck, FaTimes } from "react-icons/fa";
 import { Context } from "../../main";
 import { useNavigate } from "react-router-dom";
-import { Button } from "flowbite-react";
+import { Button, Select, TextInput, Textarea } from "flowbite-react";
 import ChapaPaymentForm from "../ChapaPaymentForm";
+import ReactCountryFlag from 'react-country-flag';
 
 const MyJobs = () => {
   const [myJobs, setMyJobs] = useState([]);
@@ -13,6 +14,7 @@ const MyJobs = () => {
   const { isAuthorized, user } = useContext(Context);
   const navigateTo = useNavigate();
   const [isPaymentClicked, setIsPaymentClicked] = useState(false);
+  const [showPayNowButton, setShowPayNowButton] = useState(true);
 
   const handlePaymentClick = () => {
     setIsPaymentClicked(true);
@@ -25,6 +27,7 @@ const MyJobs = () => {
           "http://localhost:4000/api/v1/job/getmyjobs",
           { withCredentials: true }
         );
+        console.log(data)
         setMyJobs(data.myJobs);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -75,48 +78,59 @@ const MyJobs = () => {
     );
   };
 
-  const handlePay = async (job) => {
+  const handlePayment = async (job) => {
     try {
-      // Replace the following code with your Chapa payment integration logic
-      const response = await axios.post("https://api.chapa.co/v1/hosted/pay", {
-        public_key: "CHAPUBK_TEST-8DLkMH8GAlJw90aGYASXVkqbTu0hDkQ5",
-        tx_ref: job._id, // You can use the job ID as the transaction reference
-        amount: job.salaryTo, // Use the salary or appropriate amount from the job
-        currency: "ETB", // Or any other currency supported by Chapa
-        email: user.email, // Use user email or any valid email
-        first_name: user.firstName, // Use user's first name
-        last_name: user.lastName, // Use user's last name
-        title: job.title,
-        description: job.description,
-        callback_url: "http://localhost:5173/job/me",
-        return_url: "http://localhost:5173/job/me",
-        meta: {
-          title: "test",
-        },
-      });
-      console.log(response.data);
-      // Handle payment response as needed
-      // You can redirect user to the payment URL, show payment modal, etc.
+      const amount = job.salaryTo || 0;
+      const paymentData = {
+        job: job._id,
+        amount: job.fixedSalary,
+        email: user.email,
+        currency: "ETB",
+        first_name: "John",
+        last_name: "Doe",
+        tx_ref: "transaction_reference"
+      };
+  
+      const response = await axios.post('http://localhost:4000/transactions/initiate', paymentData);
+  
+      if (response.data.detail && response.data.detail.status === "success") {
+        const checkoutUrl = response.data.detail.data.checkout_url;
+        window.location.href = checkoutUrl;
+      } else {
+        console.error('Invalid response from payment API:', response.data);
+        // Handle invalid response
+      }
     } catch (error) {
-      console.error(error);
-      toast.error("Error occurred while processing payment");
+      console.error('Error processing payment:', error);
+      // Handle error
     }
   };
+  
+  
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="mx-auto px-4 py-8 bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300">
       <h1 className="text-3xl font-bold text-center mb-8">Your Posted Jobs</h1>
       {myJobs.length > 0 ? (
-        <div className="grid grid-cols-1 max-w-screen-lg gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 max-w-screen-lg gap-6 md:grid-cols-2 lg:grid-cols-3  ">
           {myJobs.map((job) => (
-            <div key={job._id} className="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div key={job._id} className="shadow-lg rounded-lg overflow-hidden">
               <div className="p-6">
-                <h2 className="text-xl font-semibold mb-4">{job.country}</h2>
-                <h2 className="text-xl font-semibold mb-4">location: {job.location}</h2>
-                <h2 className="text-xl font-semibold bg-gradient-to-r to-pink-900 mb-4">{job.title}</h2>
+              <h2 className="text-sm font-semibold mb-4">
+              <ReactCountryFlag countryCode="ET" svg /> {job.country}
+            </h2>
+                <h2 className="text-sm font-semibold mb-4">location: {job.location}</h2>
+                {/* <h2 className="text-sm font-semibold  mb-4"></h2> */}
+                <TextInput
+                    type="text"
+                    className="ml-2 focus:outline-none"
+                    value={job.title}
+                    disabled={editingMode !== job._id}
+                    onChange={(e) => handleInputChange(job._id, "title", e.target.value)}
+                  />
                 <div className="mb-4">
-                  <span className="font-semibold">Country:</span>
-                  <input
+                  <span className="font-semibold text-sm">Country:</span>
+                  <TextInput
                     type="text"
                     className="ml-2 focus:outline-none"
                     value={job.country}
@@ -124,9 +138,9 @@ const MyJobs = () => {
                     onChange={(e) => handleInputChange(job._id, "country", e.target.value)}
                   />
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">City:</span>
-                  <input
+                  <TextInput
                     type="text"
                     className="ml-2 focus:outline-none"
                     value={job.city}
@@ -136,7 +150,7 @@ const MyJobs = () => {
                 </div>
                 <div className="mb-4">
                   <span className="font-semibold">Category:</span>
-                  <select
+                  <Select
                     className="ml-2 focus:outline-none"
                     value={job.category}
                     disabled={editingMode !== job._id}
@@ -145,12 +159,12 @@ const MyJobs = () => {
                     <option value="Graphics & Design">Graphics & Design</option>
                     <option value="Mobile App Development">Mobile App Development</option>
                     {/* Add more options similarly */}
-                  </select>
+                  </Select>
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">Salary:</span>
                   {job.fixedSalary ? (
-                    <input
+                    <TextInput
                       type="number"
                       className="ml-2 focus:outline-none"
                       value={job.fixedSalary}
@@ -159,7 +173,7 @@ const MyJobs = () => {
                     />
                   ) : (
                     <>
-                      <input
+                      <TextInput
                         type="number"
                         className="ml-2 focus:outline-none"
                         value={job.salaryFrom}
@@ -167,7 +181,7 @@ const MyJobs = () => {
                         onChange={(e) => handleInputChange(job._id, "salaryFrom", e.target.value)}
                       />
                       <span className="mx-2">to</span>
-                      <input
+                      <TextInput
                         type="number"
                         value={job.salaryTo}
                         disabled={editingMode !== job._id}
@@ -176,9 +190,9 @@ const MyJobs = () => {
                     </>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">Expired:</span>
-                  <select
+                  <Select
                     className="ml-2 focus:outline-none"
                     value={job.expired}
                     disabled={editingMode !== job._id}
@@ -186,11 +200,11 @@ const MyJobs = () => {
                   >
                     <option value={true}>TRUE</option>
                     <option value={false}>FALSE</option>
-                  </select>
+                  </Select>
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">Description:</span>
-                  <textarea
+                  <Textarea
                     rows={5}
                     className="w-full focus:outline-none"
                     value={job.description}
@@ -198,9 +212,9 @@ const MyJobs = () => {
                     onChange={(e) => handleInputChange(job._id, "description", e.target.value)}
                   />
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">Location:</span>
-                  <textarea
+                  <TextInput
                     rows={5}
                     className="w-full focus:outline-none"
                     value={job.location}
@@ -208,9 +222,9 @@ const MyJobs = () => {
                     onChange={(e) => handleInputChange(job._id, "location", e.target.value)}
                   />
                 </div>
-                <div className="mb-4">
+                <div className="mb-4 text-sm">
                   <span className="font-semibold">Paid:</span>
-                  <textarea
+                  <TextInput
                     rows={5}
                     className="w-full focus:outline-none"
                     value={job.paid}
@@ -219,9 +233,15 @@ const MyJobs = () => {
                   />
                 </div>
                 <>
-                  <Button className="bg-gradient-to-r to-pink-500 from-violet-700 via-indigo-500" onClick={handlePaymentClick}>Choose payment gateway</Button>
-                  {isPaymentClicked && <ChapaPaymentForm email={user.email} fixedSalary={job.fixedSalary} jobId={job._id} />}
+                {job.paid !== true && (
+                <>
+                  <Button className="bg-gradient-to-r to-pink-500 from-violet-700 via-indigo-500" onClick={() => handlePayment(job)}>Choose payment gateway</Button>
+                  {isPaymentClicked && handlePayment(job)}
                 </>
+              )}
+
+            </>
+
               </div>
               <div className="flex justify-between items-center px-6 py-4">
                 {editingMode === job._id ? (
