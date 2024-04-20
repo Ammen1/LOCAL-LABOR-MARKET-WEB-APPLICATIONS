@@ -7,7 +7,7 @@ import CustomButton from "./CustomButton";
 
 const Footer = () => {
   return (
-    <footer className='text-white mp-20 mt-4'>
+    <footer className='bg-gradient-to-r from-purple-400 to-purple-400 via-slate-300 mp-20 mt-4'>
       <div className='overflow-x-hidden -mb-0.5 bg-slate-100'>
         <svg
           preserveAspectRatio='none'
