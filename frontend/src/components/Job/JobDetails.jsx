@@ -3,7 +3,10 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../main";
-import { Card } from "flowbite-react";
+import { Card, Button } from "flowbite-react";
+import moment from "moment";
+import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; //
+import ReactCountryFlag from 'react-country-flag';
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -28,7 +31,7 @@ const JobDetails = () => {
 
   useEffect(() => {
     if (!isAuthorized) {
-      navigateTo("/login");
+      // navigateTo("/login");
     }
   }, [isAuthorized, navigateTo]);
 
@@ -42,51 +45,48 @@ const JobDetails = () => {
   }
 
   return (
-    <section className="bg-gray-100 py-12">
-      <div className="container mx-auto px-4 lg:px-0">
-        <h3 className="text-xl lg:text-3xl text-gray-800 font-semibold mb-6 text-center">Job Details</h3>
-        <div className="mx-auto max-w-lg">
-          <Card className="bg-white shadow-md rounded-md p-6">
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Title:</span> {job.title}
+    <section className="py-12 w-full bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300">
+      <div className=" mx-auto px-4 lg:px-0">
+        <h3 className="text-3xl lg:text-4xl font-semibold text-center text-gray-800 mb-6">Job Details</h3>
+        <div className="max-w-lg mx-auto">
+          <div className="rounded-md shadow-md p-6 0">
+          <h2 className="text-sm font-semibold mb-4">
+            Country <ReactCountryFlag countryCode="ET" svg />
+            </h2>
+            <div className="mb-4 flex gap-3">
+              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">posted By:</h4>
+              <p className="text-gray-700 text-xl">{job.postedBy.name}</p>
             </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Category:</span> {job.category}
+            <div className="mb-4 flex gap-3">
+              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">Job:</h4>
+              <p className="text-gray-700 text-xl">{job.title}</p>
             </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Country:</span> {job.country}
+            <div className="mb-4 flex gap-3">              
+            <FaMapMarkerAlt icon="map-marker" className="" /><span>{job.city}, {job.country}</span>
             </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">City:</span> {job.city}
+            <div className="mb-4 ">
+              <h4 className="text-xl  font-semibold text-gray-900">Description:</h4>
+              <p className="text-gray-700 text-sm">{job.description}</p>
             </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Location:</span> {job.location}
+            <div className="mb-4 flex gap-3">
+              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">Job Posted On:</h4>
+              <p className="text-gray-700 ">{moment(job.jobPostedOn).format("MMMM Do, YYYY")}</p>
             </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Description:</span> {job.description}
-            </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Job Posted On:</span> {job.jobPostedOn}
-            </div>
-            <div className="text-gray-700 mb-4">
-              <span className="font-semibold">Salary:</span>{" "}
-              {job.fixedSalary ? (
-                <span>{job.fixedSalary}</span>
-              ) : (
-                <span>
-                  {job.salaryFrom} - {job.salaryTo}
-                </span>
-              )}
+            <div className="mb-4 flex gap-3">
+              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">Salary:</h4>
+              <p className="text-gray-700 ">
+                {job.fixedSalary ? `${job.fixedSalary} birr` : `$${job.salaryFrom} - $${job.salaryTo}`}
+              </p>
             </div>
             {user && user.role !== "Employer" && (
               <Link
                 to={`/application/${job._id}`}
-                className="inline-block mt-4 px-4 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300 hover:bg-blue-600 text-center"
+                className="inline-block px-6 py-3 bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300 hover:bg-blue-600 text-center"
               >
                 Apply Now
               </Link>
             )}
-          </Card>
+          </div>
         </div>
       </div>
     </section>
