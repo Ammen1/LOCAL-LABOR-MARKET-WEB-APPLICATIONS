@@ -20,7 +20,8 @@ const Jobs = () => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get("http://localhost:4000/api/v1/job/getall", { withCredentials: true });
-        setJobs(response.data.jobs);
+        const filteredJobs = response.data.jobs.filter(job => job.paid === true); // Filter out jobs where paid is false
+        setJobs(filteredJobs);
         setLoading(false);
       } catch (error) {
         setError(error.message);
@@ -61,7 +62,7 @@ const Jobs = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <section className="mt-20 flex justify-center items-center ">
+    <section className="mt-20 flex justify-center items-center  ">
       <div className="mx-auto ">
         <div size="2xl" className="text-center text-3xl mb-6 font-bold"> Book Your Next Task</div>
         <div className="mb-4 border font-bold w-full flex items-center">
@@ -83,11 +84,11 @@ const Jobs = () => {
           <div className="text-red-600 text-center">{error}</div>
         ) : (
           <>
-            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-4 gap-1 justify-center items-center">
+            <div className="grid grid-cols-1 gap-6   sm:grid-cols-2 lg:grid-cols-3 justify-center items-center">
               {currentJobs.map((job) => (
                 <Link to={`/job/${job._id}`} key={job._id}>
-                  <Button outline className="w-56 border font-bold  ">
-                    <span className=" text-green-500">{job.title}</span> 
+                  <Button outline className="w-56 border    ">
+                    <span className=" text-green-500 font-extrabold text-sm">{job.title}</span> 
                   </Button>
                 </Link>
               ))}
