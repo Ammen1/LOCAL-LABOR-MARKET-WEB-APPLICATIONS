@@ -20,10 +20,12 @@ const MyApplications = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [selectedApplicantID, setSelectedApplicantID] = useState(null); // Rename to selectedApplicantID
   const [reviews, setReviews] = useState([]); // New state to store reviews
+  const [review, setReview] = useState([])
   const [jobSeekerId, setJobSeekerId] = useState("");
   const [jobSeekerData, setJobSeekerData] = useState(null);
   const [showJobSeekerDetails, setShowJobSeekerDetails] = useState(false);
   const [showFullCoverLetter, setShowFullCoverLetter] = useState(false);
+  console.log(jobSeekerId)
 
   const toggleCoverLetterVisibility = () => {
     setShowFullCoverLetter(!showFullCoverLetter);
@@ -35,25 +37,36 @@ const MyApplications = () => {
 
 
 
-const fetchAllReviews = async () => {
-  try {
-    const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
-    const { data } = response;
-    setReviews(data);
-  } catch (error) {
-    console.error("Error fetching all reviews:", error);
-  }
-};
+  const fetchAllReviews = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
+      const { data } = response;
+  
+      // Extracting all applicantIDs from reviews
+      const applicantIDs = data.map(review => review.applicantID);
+  
+      // Extracting user IDs from applicantIDs
+      const userIds = applicantIDs.map(applicantID => {
+        if (applicantID && applicantID.user) {
+          return applicantID.user._id;
+        } else {
+          return null;
+        }
+      });
+  
+      // Removing null values from userIds array
+      const filteredUserIds = userIds.filter(userId => userId !== null);
+  
+      // Setting jobSeekerId to the array of user IDs
+      setJobSeekerId(filteredUserIds);
+  
+      setReviews(data);
+    } catch (error) {
+      console.error("Error fetching all reviews:", error);
+    }
+  };
+  
 
-const fetchReviewsByJobSeekerId = async (jobSeekerId) => {
-  try {
-    const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
-    const { data } = response;
-    setReviews(data); // Update reviews state with the reviews for the specific job seeker
-  } catch (error) {
-    console.error("Error fetching reviews by Job Seeker ID:", error);
-  }
-};
 
 useEffect(() => {
   fetchAllReviews();
@@ -63,11 +76,7 @@ useEffect(() => {
   console.log("Reviews:", reviews);
 }, [reviews]);
 
-useEffect(() => {
-  if (jobSeekerId) { // Check if jobSeekerId is not empty
-    fetchReviewsByJobSeekerId(jobSeekerId); // Fetch reviews for the specific job seeker
-  }
-}, [jobSeekerId]); // Add jobSeekerId to the dependency array
+
 
   useEffect(() => {
     try {
@@ -114,6 +123,27 @@ useEffect(() => {
       }
     }
   };
+  const fetchReviewsByJobSeekerIds = async (jobSeekerIds) => {
+    try {
+      const reviewsPromises = jobSeekerIds.map(async (jobSeekerId) => {
+        const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
+        return response.data;
+      });
+      const reviewsData = await Promise.all(reviewsPromises);
+      console.log(reviewsData)
+      setReview(reviewsData.flat()); // Flatten the array of arrays into a single array of reviews
+    } catch (error) {
+      console.error("Error fetching reviews by Job Seeker IDs:", error);
+    }
+  };
+  
+  useEffect(() => {
+    if (jobSeekerId && jobSeekerId.length > 0) {
+      fetchReviewsByJobSeekerIds(jobSeekerId);
+    }
+  }, [jobSeekerId]);
+  
+
 
   const openModal = (imageUrl) => {
     setResumeImageUrl(imageUrl);
@@ -124,9 +154,9 @@ useEffect(() => {
     setModalOpen(false);
   };
 
-  const handleReviewClick = async (applicantID) => {
+  const handleReviewClick = async (jobSeekerId) => {
     if (user && user.role === "Employer") {
-      setSelectedApplicantID(applicantID);
+      setSelectedApplicantID(jobSeekerId);
       setShowReviewModal(true);
     }
   };
@@ -208,14 +238,17 @@ useEffect(() => {
                   <FaMapMarkerAlt icon="map-marker" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.address}</span><br />
                   
                 </div>
-                <p className="text-sm bg-gradient-to-br from-white to-neutral-50 via-white">
-                {showFullCoverLetter ?application. coverLetter : `${application.coverLetter.slice(0, 400)}...`}
-                {!showFullCoverLetter && (
-                  <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline ml-1">
+                <Card className="text-sm w-full bg-gradient-to-br from-white to-neutral-50 via-white p-4">
+                <div className="overflow-hidden">
+                  {showFullCoverLetter ? application.coverLetter : `${application.coverLetter.slice(0, 400)}...`}
+                </div>
+                {!showFullCoverLetter && application.coverLetter.length > 400 && (
+                  <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline mt-2">
                     Read More
                   </button>
                 )}
-              </p>
+              </Card>
+
               </div>
               </div>
               {/* <div className="ml-4 w-18 h-16 rounded-full self-center">
@@ -263,27 +296,43 @@ useEffect(() => {
                   )}
 
                 </div>
-                <div className="bg-gradient-to-r mt-10  from-slate-300 to-purple-50 via-gray-50">
+                <div className="bg-gradient-to-r mt-10  from-slate-50 to-purple-50 via-gray-50">
                 <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {reviews && reviews.length > 0 ? (
                   reviews.map((review, index) => (
                     // Check if both user and review.applicantID.user are defined and their IDs match
-                    user && user._id && review.applicantID && review.applicantID.user && user._id === review.applicantID.user._id && (
+                    user && user.role === "Employer" && review.applicantID && review.applicantID.user && application.applicantID &&  user._id != review.applicantID.user._id && (
                       <li key={index}>
                         <div className="rounded-full s space-x-6 flex">
                           <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
                           <span className="mt-5 text-2xl">{review.applicantID.user.name}</span><br /> 
                         </div>
-                        <span><strong>Tasker Provider name { " " }</strong> {review.employerID.user.name}</span><br /> 
-                        <p className=" text-sm">
-                        {showFullCoverLetter ?review.comment : `${review.comment.slice(0, 400)}...`}
-                        {!showFullCoverLetter && (
-                        <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline ml-1">
-                          Read More
-                        </button>
-                        )}
-                        </p>
-                        </li>
+                        <div className="flex items-start">
+                      <strong>Tasker Provider name </strong>{ " " }<span className="mr-1">{review.employerID.user.name}</span>
+                    </div>
+                    <div className="flex items-start">
+                  </div>
+                  <div className="mt-2">
+                  <div className="mt-2">
+                  <Card className="text-sm p-4">
+                    <div className="overflow-hidden">
+                      {review.comment.length <= 500 ? review.comment : `${review.comment.slice(0, 500)}...`}
+                    </div>
+                    {/* {review.comment.length > 400 && (
+                      <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline mt-2">
+                      Read More
+                    </button>
+                    
+                    )} */}
+                    <div className="flex items-center mb-2">
+                      {[...Array(review.rating)].map((_, index) => (
+                        <FaStar key={index} className="text-yellow-500 mr-1" /> 
+                      ))}
+                    </div>
+                  </Card>
+                </div>
+                </div>
+                  </li>
                     )
                   ))
                 ) : (
@@ -301,7 +350,7 @@ useEffect(() => {
       {showReviewModal && (
         <ReviewModal
           onClose={handleCloseReviewModal}
-          jobSeekerId={selectedApplicantID} // Pass selectedApplicantID
+          jobSeekerId={jobSeekerId} // Pass selectedApplicantID
         />
       )}
     </section>
