@@ -2,6 +2,7 @@ import express from "express";
 import { dbConnection } from "./database/dbConnection.js";
 import jobRouter from "./routes/jobRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import pinRoutes from "./routes/pinRoute.js";
 import applicationRouter from "./routes/applicationRoutes.js";
 import { config } from "dotenv";
 import cors from "cors";
@@ -59,6 +60,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
 app.use('/transactions', transactionRoutes);
+app.use('/api/v1/pin', pinRoutes);
 dbConnection();
 app.use(errorMiddleware);
 
