@@ -22,7 +22,7 @@ const ReviewModal = ({ onClose, jobSeekerId, employerId }) => {
     try {
       const reviewData = {
         applicantID: {
-          user: user._id,
+          user: jobSeekerId,
           role: "Job Seeker"
         },
         employerID: {

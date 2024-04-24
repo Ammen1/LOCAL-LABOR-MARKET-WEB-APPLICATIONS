@@ -19,6 +19,7 @@ import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 import Dashboard from "./pages/Dashboard";
 import Footer from "./components/Footer";
+import MapWithUserLocation from "./components/Home/Map";
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
@@ -46,6 +47,7 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/map" element={<MapWithUserLocation />} />
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/job/getall" element={<Jobs />} />
