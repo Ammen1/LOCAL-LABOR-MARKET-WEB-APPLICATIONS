@@ -1,7 +1,6 @@
-import catchAsyncErrors from "../middlewares/catchAsync.js";
-import ErrorHandler from "../utils/errorHandler.js";
-import { Review } from "../models/reviewModel.js";
-import { User } from "../models/userModel.js";
+import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
+import { User, Review } from "../models/userSchema.js";
+import ErrorHandler from "../middlewares/error.js";
 
 // @desc    Create a review
 // @route   POST /api/v1/user/reviews
