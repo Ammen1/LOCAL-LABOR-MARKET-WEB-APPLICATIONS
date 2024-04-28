@@ -11,10 +11,12 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react";
 import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; // Importing Font Awesome icons
 
 import { FaStar } from 'react-icons/fa';
+import { concat } from "lodash";
 
 const MyApplications = () => {
   const { user } = useContext(Context);
   const [applications, setApplications] = useState([]);
+  const [application, setApplication] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [resumeImageUrl, setResumeImageUrl] = useState("");
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -35,31 +37,22 @@ const MyApplications = () => {
   const { isAuthorized } = useContext(Context);
   const navigateTo = useNavigate();
 
+console.log("application", application)
 
+  const fetchApplications = async () => {
+    try {
+      const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
+      const  data = response.data
+      setApplication(data)
+    } catch(error) {
+      console.log(error)
+    }
+  };
 
   const fetchAllReviews = async () => {
     try {
       const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
-      const { data } = response;
-  
-      // Extracting all applicantIDs from reviews
-      const applicantIDs = data.map(review => review.applicantID);
-  
-      // Extracting user IDs from applicantIDs
-      const userIds = applicantIDs.map(applicantID => {
-        if (applicantID && applicantID.user) {
-          return applicantID.user._id;
-        } else {
-          return null;
-        }
-      });
-  
-      // Removing null values from userIds array
-      const filteredUserIds = userIds.filter(userId => userId !== null);
-  
-      // Setting jobSeekerId to the array of user IDs
-      setJobSeekerId(filteredUserIds);
-  
+      const  data  = response.data;
       setReviews(data);
     } catch (error) {
       console.error("Error fetching all reviews:", error);
@@ -70,6 +63,7 @@ const MyApplications = () => {
 
 useEffect(() => {
   fetchAllReviews();
+  fetchApplications();
 }, []);
 
 useEffect(() => {
@@ -95,7 +89,9 @@ useEffect(() => {
 
         const response = await axios.get(`http://localhost:4000/api/v1/${endpoint}`, {
           withCredentials: true,
+          
         });
+        // console.log("amen data",response.data.applications)
 
         setApplications(response.data.applications);
       };
@@ -123,19 +119,29 @@ useEffect(() => {
       }
     }
   };
+  // const fetchReviewsByJobSeekerIds = async (jobSeekerId) => {
+  //   try {
+  //     const reviewsPromises = jobSeekerId.map(async (jobSeekerId) => {
+  //       const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
+  //       return response.data;
+  //     });
+  //   } catch(error) {
+  //     console.log("Error tetching reviews by job Seeker Ids:", error);
+  //   }
+  // };
   const fetchReviewsByJobSeekerIds = async (jobSeekerIds) => {
     try {
       const reviewsPromises = jobSeekerIds.map(async (jobSeekerId) => {
         const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
         return response.data;
       });
-      const reviewsData = await Promise.all(reviewsPromises);
-      console.log(reviewsData)
+      const reviewsData = await Promise.all(reviewsPromises); // Wait for all promises to resolve
       setReview(reviewsData.flat()); // Flatten the array of arrays into a single array of reviews
     } catch (error) {
       console.error("Error fetching reviews by Job Seeker IDs:", error);
     }
   };
+  
   
   useEffect(() => {
     if (jobSeekerId && jobSeekerId.length > 0) {
@@ -251,9 +257,6 @@ useEffect(() => {
 
               </div>
               </div>
-              {/* <div className="ml-4 w-18 h-16 rounded-full self-center">
-                <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
-              </div> */}
               </div>
                 <div className=" justify-between w-full items-center gap-5 space-x-reverse">
                   {user && user.role === "Job Seeker" && (
@@ -281,7 +284,7 @@ useEffect(() => {
                         Reject
                       </Button>
                       <Button // Change to Card component
-                        onClick={() => handleReviewClick(application.applicantID)} // Pass applicantID
+                        onClick={() => handleReviewClick(application.applicantID.user)} // Pass applicantID
                         className="bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 text-white rounded-md transition duration-300  cursor-pointer"
                       >
                         Give Reviews
@@ -298,59 +301,62 @@ useEffect(() => {
                 </div>
                 <div className="bg-gradient-to-r mt-10  from-slate-50 to-purple-50 via-gray-50">
                 <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {reviews && reviews.length > 0 ? (
-                  reviews.map((review, index) => (
-                    // Check if both user and review.applicantID.user are defined and their IDs match
-                    user && user.role === "Employer" && review.applicantID && review.applicantID.user && application.applicantID &&  user._id != review.applicantID.user._id && (
+              {user && user.role === "Job Seeker" && reviews && reviews.length > 0 ? (
+                reviews.map((review, index) => {
+                  const matchingApplication = applications.find(application => 
+                    application.applicantID.user === review.applicantID.user._id &&
+                    application.name === review.applicantID.user.name
+                  );
+                  if (matchingApplication) {
+                    return (
                       <li key={index}>
                         <div className="rounded-full s space-x-6 flex">
                           <img src={Ava} alt="log" width={20} height={20} className="w-16 h-16 rounded-full" />
-                          <span className="mt-5 text-2xl">{review.applicantID.user.name}</span><br /> 
+                          <span className="mt-5 text-2xl">{review.applicantID.user.name}</span><br />  
                         </div>
                         <div className="flex items-start">
-                      <strong>Tasker Provider name </strong>{ " " }<span className="mr-1">{review.employerID.user.name}</span>
-                    </div>
-                    <div className="flex items-start">
-                  </div>
-                  <div className="mt-2">
-                  <div className="mt-2">
-                  <Card className="text-sm p-4">
-                    <div className="overflow-hidden">
-                      {review.comment.length <= 500 ? review.comment : `${review.comment.slice(0, 500)}...`}
-                    </div>
-                    {/* {review.comment.length > 400 && (
-                      <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline mt-2">
-                      Read More
-                    </button>
-                    
-                    )} */}
-                    <div className="flex items-center mb-2">
-                      {[...Array(review.rating)].map((_, index) => (
-                        <FaStar key={index} className="text-yellow-500 mr-1" /> 
-                      ))}
-                    </div>
-                  </Card>
-                </div>
-                </div>
-                  </li>
-                    )
-                  ))
-                ) : (
-                  <li>No reviews available</li>
-                )}
-              </ul>
+                          <strong>Tasker Provider name:</strong>{" "}
+                          <span className="mr-1">{review.employerID.user.name}</span>
+                        </div>
+                        <div className="mt-2">
+                          <Card className="text-sm p-4">
+                            <div className="overflow-hidden">
+                              {review.comment.length <= 500 ? review.comment : `${review.comment.slice(0, 500)}...`}
+                            </div>
+                            {review.comment.length > 400 && (
+                              <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline mt-2">
+                                Read More
+                              </button>
+                            )}
+                            <div className="flex items-center mb-2">
+                              {[...Array(review.rating)].map((_, index) => (
+                                <FaStar key={index} className="text-yellow-500 mr-1" /> 
+                              ))}
+                            </div>
+                          </Card>
+                        </div>
+                      </li>
+                    );
+                  } else {
+                    return null; 
+                  }
+                })
+              ) : (
+                <li></li>
+              )}
+            </ul>
+
               </div>
               </div>
             </div>
           ))}
         </div>
       </div>
-
       {modalOpen && <ResumeModal imageUrl={resumeImageUrl} onClose={closeModal} />}
       {showReviewModal && (
         <ReviewModal
           onClose={handleCloseReviewModal}
-          jobSeekerId={jobSeekerId} // Pass selectedApplicantID
+          jobSeekerId={selectedApplicantID} // Pass selectedApplicantID
         />
       )}
     </section>
@@ -408,7 +414,7 @@ const ApplicationCard = ({ application, deleteApplication, openModal, handleRevi
           )}
           {user && user.role === "Employer" && (
             <Button
-              onClick={() => handleReviewClick(application.jobSeekerId)}
+              onClick={() => handleReviewClick(application.applicantID)}
               className=" bg-gradient-to-r from-indigo-500 to-pink-500 via-indigo-500 mt-10 text-white rounded-md "
             >
               Add Review
