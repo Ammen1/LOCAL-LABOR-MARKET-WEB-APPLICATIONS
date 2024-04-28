@@ -58,7 +58,8 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     !address ||
     !applicantID ||
     !employerID ||
-    !resume
+    !resume ||
+    !jobId
   ) {
     return next(new ErrorHandler("Please fill all fields.", 400));
   }
@@ -70,6 +71,7 @@ export const postApplication = catchAsyncErrors(async (req, res, next) => {
     address,
     applicantID,
     employerID,
+    jobId,
     resume: {
       public_id: cloudinaryResponse.public_id,
       url: cloudinaryResponse.secure_url,
@@ -197,7 +199,8 @@ export const rejectApplication = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Accept an application
+
+// Approve payment
 export const paymentApproval = catchAsyncErrors(async (req, res, next) => {
   const { id } = req.params;
   const application = await Application.findByIdAndUpdate(
@@ -210,9 +213,20 @@ export const paymentApproval = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Application not found!", 404));
   }
 
+  const job = await Job.findOneAndUpdate(
+    { _id: application.jobId }, 
+    { paid: false }, 
+    { new: true } 
+  );
+
+  if (!job) {
+    return next(new ErrorHandler("Job not found! Application might not be associated with a valid job.", 404));
+  }
+
   res.status(200).json({
     success: true,
     message: "Application paymentApproval successfully",
     application,
   });
 });
+
