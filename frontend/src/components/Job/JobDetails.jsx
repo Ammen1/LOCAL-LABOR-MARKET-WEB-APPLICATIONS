@@ -47,22 +47,19 @@ const JobDetails = () => {
   return (
     <section className="py-12 w-full bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300">
       <div className=" mx-auto px-4 lg:px-0">
-        <h3 className="text-3xl lg:text-4xl font-semibold text-center text-gray-800 mb-6">Job Details</h3>
+        <h3 className="text-3xl lg:text-4xl font-semibold text-center text-gray-800 mb-6">Job Details <ReactCountryFlag countryCode="ET" svg /></h3>
         <div className="max-w-lg mx-auto">
           <div className="rounded-md shadow-md p-6 0">
-          <h2 className="text-sm font-semibold mb-4">
-            Country <ReactCountryFlag countryCode="ET" svg />
-            </h2>
+          <div className="mb-4 flex gap-3">
+              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">Job:</h4>
+              <p className="text-gray-700 text-xl">{job.title}</p>
+            </div>
             <div className="mb-4 flex gap-3">
               <h4 className="text-xl lg:text-xl font-semibold text-gray-900">posted By:</h4>
               <p className="text-gray-700 text-xl">{job.postedBy.name}</p>
             </div>
-            <div className="mb-4 flex gap-3">
-              <h4 className="text-xl lg:text-xl font-semibold text-gray-900">Job:</h4>
-              <p className="text-gray-700 text-xl">{job.title}</p>
-            </div>
-            <div className="mb-4 flex gap-3">              
-            <FaMapMarkerAlt icon="map-marker" className="" /><span>{job.city}, {job.country}</span>
+            <div className="mb-4 flex gap-3">  
+           <h4 className="text-xl lg:text-xl font-semibold text-gray-900"> location:</h4>  <FaMapMarkerAlt icon="map-marker" className="" /><span>{job.city}, {job.location}</span>
             </div>
             <div className="mb-4 ">
               <h4 className="text-xl  font-semibold text-gray-900">Description:</h4>
