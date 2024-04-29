@@ -69,6 +69,11 @@ const Navbar = () => {
                   ViewTasks
                 </Link>
               </li>
+              <li>
+                <Link to={"/tasker"} onClick={() => setShow(false)} className="items-center space-x-4 text-white text-sm">
+                  Tasker
+                </Link>
+              </li>
             </>
           )}
           {user && user.role === "Admin" && (
