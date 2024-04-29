@@ -3,25 +3,66 @@ import { User, Review } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import { sendToken } from "../utils/jwtToken.js";
 import mongoose from 'mongoose';
+import cloudinary from "cloudinary";
 
 export const register = catchAsyncErrors(async (req, res, next) => {
-  const { name, email, phone, password, role } = req.body;
+  const { name, email, phone, password, role, headline, experience, skills, education,  location } = req.body;
   if (!name || !email || !phone || !password || !role) {
     return next(new ErrorHandler("Please fill full form!"));
+  }
+  
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return next(new ErrorHandler("Resume File Required!", 400));
+  }
+
+  const { resume } = req.files;
+  const allowedFormats = ["image/png", "image/jpeg", "image/webp"];
+  if (!allowedFormats.includes(resume.mimetype)) {
+    return next(
+      new ErrorHandler("Invalid file type. Please upload a PNG file.", 400)
+    );
+  }
+  const cloudinaryResponse = await cloudinary.uploader.upload(
+    resume.tempFilePath
+  );
+
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    console.error(
+      "Cloudinary Error:",
+      cloudinaryResponse.error || "Unknown Cloudinary error"
+    );
+    return next(new ErrorHandler("Failed to upload Resume to Cloudinary", 500));
   }
   const isEmail = await User.findOne({ email });
   if (isEmail) {
     return next(new ErrorHandler("Email already registered!"));
   }
-  const user = await User.create({
-    name,
-    email,
-    phone,
-    password,
-    role,
-  });
+
+  let userData;
+   {
+    userData = {
+      name,
+      email,
+      phone,
+      password,
+      role,     
+      resume: {
+        public_id: cloudinaryResponse.public_id,
+        url: cloudinaryResponse.secure_url,
+      },
+      headline,
+      experience,
+      skills,
+      education,
+      location ,
+    };
+  } 
+
+
+  const user = await User.create(userData);
   sendToken(user, 201, res, "User Registered!");
 });
+
 
 export const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password, role } = req.body;
@@ -148,8 +189,6 @@ export const getEmployees = catchAsyncErrors(async (req, res, next) => {
     });
   }
 });
-
-
 
 
 // Controller function to create a new review
