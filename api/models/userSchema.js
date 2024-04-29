@@ -75,6 +75,37 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  resume: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+  },
+   headline: {
+      type: String,
+      required: [true, "Please enter a headline!"],
+    },
+    experience: {
+      type: String,
+      required: [true, "Please enter your experience!"],
+    },
+    skills: {
+      type: [String],
+      required: [true, "Please enter your skills!"],
+    },
+    education: {
+      type: String,
+      required: [true, "Please enter your education!"],
+    },
+    location: {
+      type: String,
+      required: [true, "Please enter your location!"],
+    },
+    
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] // Reference to reviews
 });
 
