@@ -25,32 +25,39 @@ export default function Tasker() {
     fetchUsers();
   }, []);
 
-  const handleDeleteUser = async (id) => {
+
+  const handleSendEmail = async (userId) => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/user/delete/${id}`);
-      setUsers(users.filter(user => user._id !== id));
-      setShowConfirmModal(false);
+      const subject = prompt('Enter the subject of the job offer:');
+      const message = prompt('Enter the message for the job offer:');
+
+      await axios.post("http://localhost:4000/api/v1/user//create-and-send-job-offer", {
+        userId,
+        subject,
+        message,
+      });
+
+      alert('Job offer sent successfully!');
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error sending job offer:', error);
+      alert('Failed to send job offer. Please try again later.');
     }
   };
-
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center mt-20">
       {users.filter(user => user.role === 'Job Seeker').reduce((rows, user, index) => {
         if (index % 2 === 0) rows.push([]);
         rows[rows.length - 1].push(
-          <Card key={index} className="max-w-sm mx-4 my-4 rounded-lg shadow-lg">
-            <div className="w-full h-48 overflow-hidden self-center  rounded-t-lg">
+          <div key={index} className="max-w-sm mx-4 my-4 rounded-lg shadow-lg h-full ">
+            <div className="w-full h-44 overflow-hidden self-center  rounded-t-lg">
               {user.resume && user.resume.url && (
-                <img src={user.resume.url} alt="Resume" className="h-44 ml-20  object-cover rounded-full  justify-center items-center" />
-              )}
-              
+                <img src={user.resume.url} alt="Resume" className="h-44 ml-20 object-cover rounded-full " />
+              )}              
             </div>
-            <h2 className="text-xl font-semibold mb-2 bg-gradient-to-tl  from-slate-100 to-purple-100 via-slate-100">{user.name}</h2>
+            <h2 className="text-xl font-semibold">{user.name}</h2>
             <div className="p-1">
             <h6 className="text-gray-500 mb-2">Hi my name is {user.name} {user.headline}</h6>
-            <h6 className="text-gray-500 mb-2">and i have experience {user.experience} i have all this skills {user.skills.join(', ')} </h6>
+            <h6 className="text-gray-500 mb-2">and i have {user.experience} i have all this skills {user.skills.join(', ')} </h6>
             <div className="flex items-center mb-2">
                 <MdEmail className="text-gray-500 mr-2" />
                 <p className="text-gray-500">{user.email}</p>
@@ -61,24 +68,23 @@ export default function Tasker() {
               </div>
               <div className="flex items-center mb-2">
                 <MdLocationOn className="text-gray-500 mr-2" />
-                <p className="text-gray-500">{user.location}</p>
+                <p className="text-gray-500 text-sm">{user.location}</p>
               </div>
               <div className="flex items-center mb-2">
                 <MdSchool className="text-gray-500 mr-2" />
-                <p className="text-gray-500">{user.education}</p>
+                <p className="text-gray-500 text-sm">{user.education}</p>
               </div>
             
               <h1 className="text-gray-500 mb-2">Reviews Count: {user.reviews.length}</h1>
+
               <div className="flex justify-center mt-4">
-                <Button onClick={() => {
-                  setDeleteUserId(user._id);
-                  setShowConfirmModal(true);
-                }} className="bg-gradient-to-br from-indigo-500 to-pink-500 via-indigo-600 px-4 py-2 rounded">
-                  Send me Email
-                </Button>
-              </div>
+              <Button onClick={() => handleSendEmail(user._id)} className="bg-gradient-to-br from-indigo-500 to-pink-500 via-indigo-600 px-4 py-2 rounded">
+                Send Job Offer
+              </Button>
             </div>
-          </Card>
+
+            </div>
+          </div>
         );
         return rows;
       }, []).map((row, rowIndex) => (
