@@ -33,7 +33,7 @@ const Jobs = () => {
 
   useEffect(() => {
     if (!isAuthorized) {
-      // navigateTo("/");
+      navigateTo("/");
     }
   }, [isAuthorized, navigateTo]);
 
@@ -58,7 +58,7 @@ const Jobs = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <section className=" container mt-20 flex justify-center items-center ml-44">
+    <section className=" container mt-20 flex justify-center items-center ml-44 w-full ">
       <div className="mx-auto">
         <div size="2xl" className="text-center text-3xl mb-6 font-bold"> Book Your Next Task</div>
         <div className="mb-4 border font-bold w-full flex items-center">
@@ -84,8 +84,8 @@ const Jobs = () => {
                 <Link to={`/job/${job._id}`} key={job._id}>
                   <Card outline className=" h-full border max-w-sm bg-gradient-to-br from-teal-50 to-pink-100 via-indigo-50 ">
                     <h3 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-whit">{job.title}</h3>
-                    <h2 className="text-black text-lg">Category: {job.category}</h2>
-                    <h2 className="text-black text-lg"> location: {job.location}</h2>
+                    <h2 className="text-black text-mb">Category: {job.category}</h2>
+                    <h2 className="text-black text-mb"> location: {job.location}</h2>
                     <h2 className="text-black text-lg">Salary: {job.fixedSalary}{" "}<span className=" text-xl text-green-500">birr</span></h2>
                     <h2 className="text-black text-lg">Posted On: {new Date(job.jobPostedOn).toLocaleDateString()}</h2>
                   </Card>

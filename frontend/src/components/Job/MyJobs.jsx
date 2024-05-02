@@ -86,8 +86,8 @@ const MyJobs = () => {
         amount: job.fixedSalary,
         email: user.email,
         currency: "ETB",
-        first_name: "John",
-        last_name: "Doe",
+        first_name: user.name,
+        last_name: "Tamirat Ali Guda",
         tx_ref: "transaction_reference"
       };
   
@@ -105,9 +105,6 @@ const MyJobs = () => {
       // Handle error
     }
   };
-  
-  
-
   return (
     <div className="mx-auto px-4 py-8 bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300">
       <h1 className="text-3xl font-bold text-center mb-8">Your Posted Jobs</h1>
@@ -158,7 +155,6 @@ const MyJobs = () => {
                   >
                     <option value="Graphics & Design">Graphics & Design</option>
                     <option value="Mobile App Development">Mobile App Development</option>
-                    {/* Add more options similarly */}
                   </Select>
                 </div>
                 <div className="mb-4 text-sm">
