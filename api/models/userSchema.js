@@ -87,23 +87,23 @@ const userSchema = new mongoose.Schema({
   },
    headline: {
       type: String,
-      required: [true, "Please enter a headline!"],
+      required: [false, "Please enter a headline!"],
     },
     experience: {
       type: String,
-      required: [true, "Please enter your experience!"],
+      required: [false, "Please enter your experience!"],
     },
     skills: {
       type: [String],
-      required: [true, "Please enter your skills!"],
+      required: [false, "Please enter your skills!"],
     },
     education: {
       type: String,
-      required: [true, "Please enter your education!"],
+      required: [false, "Please enter your education!"],
     },
     location: {
       type: String,
-      required: [true, "Please enter your location!"],
+      required: [false, "Please enter your location!"],
     },
     
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }] // Reference to reviews
