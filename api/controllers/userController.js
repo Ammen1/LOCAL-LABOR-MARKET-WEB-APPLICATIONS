@@ -2,8 +2,10 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { User, Review } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import { sendToken } from "../utils/jwtToken.js";
+import { JobOffer } from "../models/jobOffer.js";
 import mongoose from 'mongoose';
 import cloudinary from "cloudinary";
+import { sendMail } from "../services/common.js";
 
 export const register = catchAsyncErrors(async (req, res, next) => {
   const { name, email, phone, password, role, headline, experience, skills, education,  location } = req.body;
@@ -231,7 +233,7 @@ export const getAllReviews = catchAsyncErrors(async (req, res) => {
 // Controller function to get a review by ID
 export const getReviewById = catchAsyncErrors(async (req, res) => {
   try {
-    const jobSeekerId = req.params.jobSeekerId; // Extract the applicantId from the route parameters
+    const jobSeekerId = req.params.jobSeekerId; 
     const reviews = await Review.find({ 'applicantID.user': jobSeekerId })
       .populate('applicantID.user', 'name')
       .populate('employerID.user', 'name');
@@ -274,3 +276,33 @@ export const deleteReviewById =  catchAsyncErrors(async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+export const createAndSendJobOffer = catchAsyncErrors(async (req, res) => {
+  try {
+    // const employeeId = req.user.id; 
+    const { userId, subject, message } = req.body;
+
+    if (!userId || !subject || !message) {
+      return res.status(400).json({ success: false, message: 'Please provide userId, subject, and message' });
+    }
+    // Retrieve the user's email address
+    const user = await User.findById(userId);
+    if (!user || !user.email) {
+      return res.status(400).json({ success: false, message: 'User not found or user email not provided' });
+    }
+    const newJobOffer = new JobOffer({
+      userId,
+      subject,
+      message,
+    });
+
+    await newJobOffer.save();
+    await sendMail({ to: user.email, html: message, subject });
+    return res.status(201).json({ success: true, message: 'Job offer created and sent successfully' });
+  } catch (error) {
+    console.error('Error creating and sending job offer:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
