@@ -68,3 +68,14 @@ export async function verifyTransaction(req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+
+export async function getalltransactio(req, res){
+  try { 
+    const transaction = await Transaction.find().populate('job', 'title');;
+    res.status(200).json(transaction);
+  } catch( error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal server errorr' });
+  }
+}

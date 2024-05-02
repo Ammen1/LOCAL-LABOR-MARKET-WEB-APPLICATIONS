@@ -1,19 +1,17 @@
 import { catchAsyncErrors } from "../middlewares/catchAsyncError.js";
 import { Job } from "../models/jobSchema.js";
 import ErrorHandler from "../middlewares/error.js";
+import { v4 as uuidv4 } from 'uuid';
 
 export const getAllJobs = catchAsyncErrors(async (req, res, next) => {
-  const jobs = await Job.find({ expired: false });
-  const totalJobsCount = await Job.countDocuments( {expired: false });
+  const jobs = await Job.find({ expired: false }).populate('postedBy', 'name');
+  const totalJobsCount = await Job.countDocuments({ expired: false });
   res.status(200).json({
     success: true,
     jobs,
     totalJobs: totalJobsCount,
   });
 });
-
-
-import { v4 as uuidv4 } from 'uuid';
 
 export const postJob = catchAsyncErrors(async (req, res, next) => {
   const { role } = req.user;
