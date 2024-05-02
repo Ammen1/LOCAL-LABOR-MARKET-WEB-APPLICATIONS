@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import {
   HiArrowNarrowUp,
   HiDocumentText,
+  HiNewspaper,
+  HiOutlinePaperAirplane,
+  HiOutlineQuestionMarkCircle,
   HiOutlineUserGroup,
 } from "react-icons/hi";
 import { Button, Table } from "flowbite-react";
@@ -119,19 +122,16 @@ export default function DashboardComp() {
     return <div>Error: {error}</div>;
   }
   
-
-
-
   return (
-    <div className="p-3 md:mx-auto shadow-md w-full px-8">
+    <div className="p-8 md:mx-auto shadow-md  translate-x-5 bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 ">
       <div className="flex-wrap flex gap-4 justify-center">
-        <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
+        <div className="flex flex-col p-3  gap-4 rounded-md shadow-md">
           <div className="flex justify-between">
             <div>
               <h3 className="text-gray-500 text-md uppercase">Total Users</h3>
               <p className="text-2xl">{totalUsers}</p>
             </div>
-            <HiOutlineUserGroup className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
+            <HiOutlineUserGroup className="bg-teal-600  rounded-full text-5xl p-3 shadow-lg" />
           </div>
         </div>
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
@@ -140,7 +140,7 @@ export default function DashboardComp() {
               <h3 className="text-gray-500 text-md uppercase">Total Takers</h3>
               <p className="text-2xl">{totalEmployees}</p>
             </div>
-            <HiOutlineUserGroup className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
+            <HiOutlineQuestionMarkCircle className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
         </div>
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
@@ -149,7 +149,7 @@ export default function DashboardComp() {
               <h3 className="text-gray-500 text-md uppercase">Total Task Provider</h3>
               <p className="text-2xl">{totalJobSeekerUsers}</p>
             </div>
-            <HiOutlineUserGroup className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
+            <HiOutlinePaperAirplane className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
         </div>
         <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
@@ -158,16 +158,7 @@ export default function DashboardComp() {
               <h3 className="text-gray-500 text-md uppercase">Total Applications</h3>
               <p className="text-2xl">{totalApplications}</p>
             </div>
-            <HiDocumentText className="bg-lime-600 text-white rounded-full text-5xl p-3 shadow-lg" />
-          </div>
-        </div>
-        <div className="flex flex-col p-3 dark:bg-slate-800 gap-4 md:w-72 w-full rounded-md shadow-md">
-          <div className="flex justify-between">
-            <div>
-              <h3 className="text-gray-500 text-md uppercase">Total Task</h3>
-              <p className="text-2xl">{totalJobs}</p>
-            </div>
-            <HiDocumentText className="bg-lime-600 text-white rounded-full text-5xl p-3 shadow-lg" />
+            <HiNewspaper className="bg-teal-600 text-white rounded-full text-5xl p-3 shadow-lg" />
           </div>
         </div>
       </div>
