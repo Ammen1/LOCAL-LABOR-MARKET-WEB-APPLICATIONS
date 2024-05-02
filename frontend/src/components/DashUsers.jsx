@@ -8,6 +8,7 @@ export default function DashUsers() {
   const [users, setUsers] = useState([]);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -23,10 +24,6 @@ export default function DashUsers() {
   
     fetchUsers();
   }, []);
-  
-  useEffect(() => {
-    console.log("First user:", users[0]); // Log the first user object to check its structure
-  }, [users]);
 
   const deleteUser = async (id) => {
     try {
@@ -38,12 +35,29 @@ export default function DashUsers() {
     }
   };
 
+  // Filter users based on search query
+  const filteredUsers = users.filter(user =>
+    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    (typeof user.phone === 'string' && user.phone.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    user.role.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <table className="shadow-md mt-10 w-full divide-y divide-gray-200 ml-44">
-        <thead className="bg-gray-50">
-          <tr>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+      <div className="flex w-full mt-10 justify-start ml-20">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search by name, email, phone, or role"
+          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <table className="shadow-md mt-6 w-full divide-y bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 ml-20">
+        <thead className="bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 hover:from-teal-600">
+          <tr className=" hover:from-teal-600">
+            <th scope="col" className="">
               Name
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -60,9 +74,9 @@ export default function DashUsers() {
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {users.map((user, index) => (
-            <tr key={index} className="font-medium text-zinc-900 hover:underline cursor-pointer">
+        <tbody className="bg-white divide-y divide-gray-200 hover:from-teal-600">
+          {filteredUsers.map((user, index) => (
+            <tr key={index} className="font-medium text-zinc-900 hover:from-teal-500 cursor-pointer">
               <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
               <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
               <td className="px-6 py-4 whitespace-nowrap">{user.phone}</td>
@@ -80,8 +94,8 @@ export default function DashUsers() {
         </tbody>
       </table>
       {showConfirmModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-          <div className="bg-white rounded-lg p-8 max-w-md w-full">
+        <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 hover:from-teal-600">
+          <div className="bg-gradient-to-br from-slate-100 to-purple-400 via-slate-300 hover:from-teal-600 rounded-lg p-8 max-w-md w-full">
             <div className="text-center">
               <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
               <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">
