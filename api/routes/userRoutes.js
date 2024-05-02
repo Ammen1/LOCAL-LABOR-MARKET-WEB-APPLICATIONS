@@ -1,5 +1,5 @@
 import express from "express";
-import { login, register, logout, getUser, createReview,getReviewById,   getUsers, getjobSeeker, getEmployees, getUserss, deleteUser,getAllReviews } from "../controllers/userController.js";
+import { login, register, logout, getUser, createReview,getReviewById,createAndSendJobOffer, getUsers, getjobSeeker, getEmployees, getUserss, deleteUser,getAllReviews } from "../controllers/userController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 import {getReviewsByJobSeeker} from "../controllers/reviewController.js"
 
@@ -21,5 +21,6 @@ router.get("/reviews", getAllReviews); // Get reviews for a job seeker
 // router.get("/reviews/employer", getReviewsByEmployer); // Get reviews by an employer
 router.get("/reviews/:jobSeekerId",  getReviewById);
 router.get("/jobseeker/:jobSeekerId", getReviewsByJobSeeker);
+router.post('/create-and-send-job-offer', createAndSendJobOffer);
 
 export default router;
