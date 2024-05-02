@@ -71,9 +71,14 @@ const PostJob = () => {
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value="">Select Category</option>
-                <option value="Graphics & Design">Graphics & Design</option>
-                <option value="Mobile App Development">Mobile App Development</option>
-                {/* Add more options as needed */}
+                <option value="Assembly">Assemblyn</option>
+                <option value="Mounting">Mounting</option>
+                <option value="Moving">Moving</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Outdoor Help">Outdoor Help</option>
+                <option value="Home Repairs">Home Repairs</option>
+                <option value="Painting">Painting</option>
+                <option value="Trending">Trending</option>
               </Select>
             </div>
             <Label htmlFor="country" className="block text-sm font-semibold text-gray-600">Countyry</Label>
