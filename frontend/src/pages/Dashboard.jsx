@@ -8,8 +8,10 @@ import DashboardComp from "../components/DashboardComp";
 import DashCreateAccount from "../components/DashCreateAccount";
 import DashUsers from "../components/DashUsers";
 import AdminReviews from "../components/AdminReviews.jsx";
-// import Expenses from "../components/Expenses";
-// import CreateProject from "./CreateProjects";
+import DashLifecycle from "../components/DashLifecycle.jsx";
+import DashApplication from "../components/DashApplocation"
+import DashPayment from "../components/DashPayment.jsx";
+import DashJobOffer from "../components/Dashboard/DashJobOffer.jsx";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -22,8 +24,8 @@ export default function Dashboard() {
     }
   }, [location.search]);
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="md:w-56 h-screen">
+    <div className="min-h-screen flex flex-col md:flex-row ">
+      <div className="md:w-56  ">
         {/* Sidebar */}
         <DashSidebar />
       </div>
@@ -32,6 +34,10 @@ export default function Dashboard() {
       {tab === "users" && <DashUsers />}   
       {tab === "dash" && <DashboardComp />}
       {tab === "reviews" && <AdminReviews />}
+      {tab === "lifecycle" && <DashLifecycle />}
+      {tab === "applications" && <DashApplication />}
+      {tab === "payment" && <DashPayment />}
+      {tab === "joboffer" && <DashJobOffer />}
 
     </div>
   );
