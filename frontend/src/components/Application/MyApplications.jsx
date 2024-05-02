@@ -1,17 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../../main";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import ResumeModal from "./ResumeModal";
-import { Button, Card } from "flowbite-react";
+import { Button, } from "flowbite-react";
 import ReviewModal from "./ReviewModal";
 import Ava from "../../assets/Ava.jpeg";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "flowbite-react";
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; // Importing Font Awesome icons
-
+import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; 
 import { FaStar } from 'react-icons/fa';
-import { concat } from "lodash";
+
 
 const MyApplications = () => {
   const { user } = useContext(Context);
@@ -91,8 +89,6 @@ useEffect(() => {
           withCredentials: true,
           
         });
-        // console.log("amen data",response.data.applications)
-
         setApplications(response.data.applications);
       };
 
@@ -214,47 +210,45 @@ useEffect(() => {
   };
 
   return (
-    <section className="page w-full gap-20 bg-gradient-to-b from-slate-50 to-purple-100 via-slate-200">
-      <div className="container mx-auto px-4 py-8 bg-gradient-to-r from-white to-zinc-100 via-slate-500">
-        <h1 className="text-3xl font-bold text-center mb-8 text-white">
+    <section className="page w-full gap-20 bg-gradient-to-b from-slate-50 to-purple-100 via-slate-100">
+      <div className="container mx-auto px-4  bg-gradient-to-r from-white to-zinc-100 via-slate-100">
+        <h1 className="text-3xl font-bold text-center mt-10">
           {user && user.role === "Job Seeker"
             ? "My Applications"
             : "Applications From Job Seekers"}
         </h1>
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-1">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-1 lg:grid-cols-1 mb-44">
           {applications.map((application) => (
-            <div key={application._id} className="bg-white rounded-lg shadow-lg overflow-hidden w-full mb-8">
+            <div key={application._id} className=" rounded-lg shadow-lg overflow-hidden w-full mb-8">
               <div className="p-6 w-full">
-              <div className="border shadow-lg w-44 h-44 rounded-full gap-20 justify-center items-center  mt-8 bg-gradient-to-r from-stone-100 to-lime-100 via-white">
+              <div className="border shadow-lg w-44 h-44 rounded-full gap-20 justify-center items-center mt-20 bg-gradient-to-r from-stone-100 to-lime-100 via-white">
                   <img
                     src={application.resume.url}
                     alt="Resume"
-                    className="cursor-pointer  rounded-full"
+                    className="cursor-pointer rounded-full"
                     onClick={() => openModal(application.resume.url)}
                   />
                   </div>
               <div className="mb-4 leading-7 flex items-center gap-9">
                 <div className="flex-1">
                 <h2 className="text-lg font-bold ml-10  mb-2"> <span className=" bg-gradient-to-tl  from-slate-100 to-purple-500 via-slate-100">{application.name}</span></h2>
-                  <div className="  text-4xl text-black">{getStatusMessage(application)}</div>
+                  <div className="  text-2xl text-black">{getStatusMessage(application)}</div>
                   <div className="text-sm">
-                <div className=" p-4 mb-4 rounded-md flex gap-5">
+                <div className="p-4 mb-4 rounded-md flex gap-5">
                   <FaEnvelope icon="envelope" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100 " /><span>{application.email}</span><br />
                   <FaPhone icon="phone" className="mr-2 text-lg bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.phone}</span> <br />              
-                  <FaMapMarkerAlt icon="map-marker" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.address}</span><br />
-                  
+                  <FaMapMarkerAlt icon="map-marker" className="mr-2 text-lg  bg-gradient-to-tl from-slate-100 to-purple-500 via-slate-100" /><span>{application.address}</span><br /> 
                 </div>
-                <Card className="text-sm w-full bg-gradient-to-br from-white to-neutral-50 via-white p-4">
+                <div className="text-sm w-full p-4">
                 <div className="overflow-hidden">
-                  {showFullCoverLetter ? application.coverLetter : `${application.coverLetter.slice(0, 400)}...`}
+                  {showFullCoverLetter ? application.coverLetter : `${application.coverLetter.slice(0, 200)}...`}
                 </div>
                 {!showFullCoverLetter && application.coverLetter.length > 400 && (
                   <button onClick={toggleCoverLetterVisibility} className="text-blue-500 hover:underline mt-2">
                     Read More
                   </button>
                 )}
-              </Card>
-
+              </div>
               </div>
               </div>
               </div>
@@ -299,9 +293,9 @@ useEffect(() => {
                   )}
 
                 </div>
-                <div className="bg-gradient-to-r mt-10  from-slate-50 to-purple-50 via-gray-50">
+                <div className="bg-gradient-to-br mt-10">
                 <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {user && user.role === "Job Seeker" && reviews && reviews.length > 0 ? (
+              {user && user.role === "Job Seeker" && reviews ? (
                 reviews.map((review, index) => {
                   const matchingApplication = applications.find(application => 
                     application.applicantID.user === review.applicantID.user._id &&
@@ -319,7 +313,7 @@ useEffect(() => {
                           <span className="mr-1">{review.employerID.user.name}</span>
                         </div>
                         <div className="mt-2">
-                          <Card className="text-sm p-4">
+                          <div className="text-sm p-4">
                             <div className="overflow-hidden">
                               {review.comment.length <= 500 ? review.comment : `${review.comment.slice(0, 500)}...`}
                             </div>
@@ -333,7 +327,7 @@ useEffect(() => {
                                 <FaStar key={index} className="text-yellow-500 mr-1" /> 
                               ))}
                             </div>
-                          </Card>
+                          </div>
                         </div>
                       </li>
                     );
