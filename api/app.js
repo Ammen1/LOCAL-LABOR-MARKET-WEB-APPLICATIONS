@@ -11,7 +11,6 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { Job } from "./models/jobSchema.js";
 import transactionRoutes from "./routes/transactionRoutes.js"
-// const transactionRoutes = require('./routes/transactionRoutes');
 
 const app = express();
 config({ path: "./config/config.env" });
@@ -23,8 +22,6 @@ app.use(
     credentials: true,
   })
 );
-
-
 
 app.use(cookieParser());
 app.use(express.json());
@@ -61,6 +58,8 @@ app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
 app.use('/transactions', transactionRoutes);
 app.use('/api/v1/pin', pinRoutes);
+
+
 dbConnection();
 app.use(errorMiddleware);
 

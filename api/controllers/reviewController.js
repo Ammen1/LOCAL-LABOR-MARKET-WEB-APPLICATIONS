@@ -6,16 +6,16 @@ import ErrorHandler from "../middlewares/error.js";
 // @route   POST /api/v1/user/reviews
 // @access  Private (Employer)
 export const createReview = catchAsyncErrors(async (req, res, next) => {
-  const { jobSeekerId, rating, comment } = req.body;
+  const { applicantID, rating, comment } = req.body;
 
   // Check if the job seeker ID is provided
-  if (!jobSeekerId) {
+  if (!applicantID) {
     return next(new ErrorHandler("Job seeker ID is required", 400));
   }
 
   // Check if the job seeker exists
-  const jobSeeker = await User.findById(jobSeekerId);
-  if (!jobSeeker || jobSeeker.role !== "Job Seeker") {
+  const applicant = await User.findById(jobSeekerId);
+  if (!applicant || applicant.role !== "Job Seeker") {
     return next(new ErrorHandler("Job seeker not found", 404));
   }
 
@@ -24,8 +24,8 @@ export const createReview = catchAsyncErrors(async (req, res, next) => {
 
   // Create the review
   const review = await Review.create({
-    reviewer: employerId,
-    reviewee: jobSeekerId,
+    employerId: employerId,
+    applicantID: applicantID,
     rating,
     comment,
   });
