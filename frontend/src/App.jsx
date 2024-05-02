@@ -20,6 +20,8 @@ import MyJobs from "./components/Job/MyJobs";
 import Dashboard from "./pages/Dashboard";
 import Footer from "./components/Footer";
 import MapWithUserLocation from "./components/Home/Map";
+import Tasker from "./components/Tasker";
+
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
@@ -52,6 +54,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/job/getall" element={<Jobs />} />
           <Route path="/job/:id" element={<JobDetails />} />
+          <Route path="/tasker" element={<Tasker/>} />
           <Route path="/application/:id" element={<Application />} />
           <Route path="/applications/me" element={<MyApplications />} />
           <Route path="/dashboard" element={<Dashboard />} />
