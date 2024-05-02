@@ -15,10 +15,10 @@ const Home = () => {
   }
   return (
     <>
-      <section className="homePage page bg-slate-100">
+      <section className="">
         <HeroSection />
-        <HowItWorks />
         <Map/>
+        <HowItWorks />
         <PopularCategories />
         <PopularCompanies />
       </section>

@@ -222,16 +222,6 @@ const MyJobs = () => {
                     onChange={(e) => handleInputChange(job._id, "location", e.target.value)}
                   />
                 </div>
-                <div className="mb-4 text-sm">
-                  <span className="font-semibold">Paid:</span>
-                  <TextInput
-                    rows={5}
-                    className="w-full focus:outline-none"
-                    value={job.paid}
-                    disabled={editingMode !== job._id}
-                    onChange={(e) => handleInputChange(job._id, "paid", e.target.value)}
-                  />
-                </div>
                 <>
                 {job.paid !== true && (
                 <>
