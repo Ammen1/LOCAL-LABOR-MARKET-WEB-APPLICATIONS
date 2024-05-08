@@ -105,9 +105,6 @@ export async function invoiceTemplate(order){
     </div>
     <div class="order-details">
       <h2>Order Details</h2>
-      <p><strong>Order #:</strong> ${order.id}</p>
-      <p><strong>Delivery Address:</strong> ${order.selectedAddress.name}, ${order.selectedAddress.street}, ${order.selectedAddress.city}, ${order.selectedAddress.state}, ${order.selectedAddress.pinCode}</p>
-      <p><strong>Contact Number:</strong> ${order.selectedAddress.phone}</p>
     </div>
     <div class="order-summary">
       <h2>Order Summary</h2>
