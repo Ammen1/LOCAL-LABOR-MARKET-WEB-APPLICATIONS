@@ -15,14 +15,14 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [headline, setHeadline] = useState(""); // Additional profile field
-  const [experience, setExperience] = useState(""); // Additional profile field
-  const [skills, setSkills] = useState(""); // Additional profile field
-  const [education, setEducation] = useState(""); // Additional profile field
-  const [location, setLocation] = useState(""); // Additional profile field
-  const [linkedin, setLinkedin] = useState(""); // Additional profile field
-  const [github, setGithub] = useState(""); // Additional profile field
-  const [portfolio, setPortfolio] = useState(""); // Additional profile field
+  const [headline, setHeadline] = useState(""); 
+  const [experience, setExperience] = useState(""); 
+  const [skills, setSkills] = useState(""); 
+  const [education, setEducation] = useState(""); 
+  const [location, setLocation] = useState(""); 
+  const [linkedin, setLinkedin] = useState(""); 
+  const [github, setGithub] = useState(""); 
+  const [portfolio, setPortfolio] = useState(""); 
   const [resume, setResume] = useState("");
 
   const { isAuthorized, setIsAuthorized } = useContext(Context);
@@ -40,7 +40,19 @@ const Register = () => {
         toast.error("Please fill out all required fields for job seekers.");
         return;
       }
-  
+
+      const ethiopianPhoneNumberRegex = /^(?:251)?[1-59]\d{8}$/;
+      if (!ethiopianPhoneNumberRegex.test(phone)) {
+        toast.error("Please enter a valid Ethiopian phone number.");
+        return;
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        toast.error("Please enter a valid email address.");
+        return;
+      }
       const formData = new FormData();
       formData.append("name", name);
       formData.append("email", email);
