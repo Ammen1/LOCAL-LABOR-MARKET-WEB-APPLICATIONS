@@ -29,17 +29,17 @@ export default function AdminReviews() {
     setFilteredReviews(filtered);
   }, [searchQuery, reviews]);
 
-  useEffect(() => {
-    // Sort filtered reviews by rating
-    const sortedReviews = [...filteredReviews].sort((a, b) => {
-      if (sortByRating) {
-        return b.rating - a.rating;
-      } else {
-        return a.rating - b.rating;
-      }
-    });
-    setFilteredReviews(sortedReviews);
-  }, [sortByRating, filteredReviews]);
+  // useEffect(() => {
+  //   // Sort filtered reviews by rating
+  //   const sortedReviews = [...filteredReviews].sort((a, b) => {
+  //     if (sortByRating) {
+  //       return b.rating - a.rating;
+  //     } else {
+  //       return a.rating - b.rating;
+  //     }
+  //   });
+  //   setFilteredReviews(sortedReviews);
+  // }, [sortByRating, filteredReviews]);
 
   const fetchAllReviews = async () => {
     try {
