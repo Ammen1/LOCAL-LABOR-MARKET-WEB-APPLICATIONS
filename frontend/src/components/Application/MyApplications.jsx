@@ -73,7 +73,7 @@ useEffect(() => {
   useEffect(() => {
     try {
       if (!isAuthorized) {
-        navigateTo("/");
+        // navigateTo("/");
         return;
       }
 
@@ -299,7 +299,7 @@ useEffect(() => {
                 reviews.map((review, index) => {
                   const matchingApplication = applications.find(application => 
                     application.applicantID.user === review.applicantID.user._id &&
-                    application.name === review.applicantID.user.name
+                    application.applicantID.name === review.applicantID.user.name
                   );
                   if (matchingApplication) {
                     return (
