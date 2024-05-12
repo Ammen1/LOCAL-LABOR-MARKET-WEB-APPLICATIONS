@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaBuilding, FaSuitcase, FaUsers, FaUserPlus } from "react-icons/fa";
+import heroAnimation from '../../assets/animation/Animation 4.json';
+import Lottie from "lottie-react";
 
 const HeroSection = () => {
   const [text, setText] = useState([]);
@@ -20,7 +22,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <div className="heroSection bg-gradient-to-r from-slate-50 to-purple-400 via-slate-200 py-20">
+    <div className=" bg-gradient-to-t from-slate-50 to-purple-700 via-slate-300 py-20">
       <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between">
         <div className="w-full lg:w-1/2">
           <div className="title mb-8">
@@ -28,7 +30,7 @@ const HeroSection = () => {
               Find a job that suits
             </h1>
             <h2 className="text-2xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-              {/* {text.join("")} */}
+              
               your interests and skills
             </h2>
             <p className="text-gray-700 text-sm">
@@ -51,8 +53,14 @@ const HeroSection = () => {
             </button>
           </div>
         </div>
-        <div className="w-full lg:w-1/2">
-        <img src="/product.jpg" alt="hero" className="object-cover w-full h-auto lg:h-full animate-pulse" />
+        <div className="w-full ml-28 lg:w-1/2">
+        <Lottie
+        animationData={heroAnimation}
+        loop
+        autoplay
+        style={{ width: '100%', height: "80%", maxWidth: '500px' }}
+        className="bg-cover rounded-lg"
+      />
       </div>
 
       </div>

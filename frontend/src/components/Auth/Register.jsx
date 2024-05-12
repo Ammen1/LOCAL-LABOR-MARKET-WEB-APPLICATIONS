@@ -7,6 +7,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
 import { Button, TextInput } from "flowbite-react";
+import { AiOutlineLock } from "react-icons/ai";
 import "./Register.css";
 
 const Register = () => {
@@ -14,6 +15,7 @@ const Register = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState(""); 
   const [role, setRole] = useState("");
   const [headline, setHeadline] = useState(""); 
   const [experience, setExperience] = useState(""); 
@@ -35,19 +37,24 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+
+      // Check if password matches confirmPassword
+      if (password !== confirmPassword) {
+        toast.error("Passwords do not match.");
+        return;
+      }
       // Check if required fields for job seekers are filled out
       if (role === "Job Seeker" && (!location || !education || !experience || !headline)) {
         toast.error("Please fill out all required fields for job seekers.");
         return;
       }
 
-      const ethiopianPhoneNumberRegex = /^(?:251)?[1-59]\d{8}$/;
-      if (!ethiopianPhoneNumberRegex.test(phone)) {
-        toast.error("Please enter a valid Ethiopian phone number.");
+      const phoneNumberRegex = /^\d{1,10}$/;
+      if (!phoneNumberRegex.test(phone)) {
+        toast.error("Please enter a valid phone number with a maximum of 10 digits.");
         return;
       }
-
-      // Validate email format
+      
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         toast.error("Please enter a valid email address.");
@@ -81,6 +88,7 @@ const Register = () => {
       setName("");
       setEmail("");
       setPassword("");
+      setConfirmPassword("");
       setPhone("");
       setRole("");
       setResume("");
@@ -197,6 +205,22 @@ const Register = () => {
                       className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
                     />
                     <RiLock2Fill className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-black">
+                    Confirm Password
+                  </label>
+                  <div className="relative mt-1">
+                    <input
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirm Password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="form-input block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md"
+                    />
+                    <AiOutlineLock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black" />
                   </div>
                 </div>
                

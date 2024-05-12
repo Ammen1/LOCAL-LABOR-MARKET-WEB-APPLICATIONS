@@ -298,8 +298,7 @@ useEffect(() => {
               {user && user.role === "Job Seeker" && reviews ? (
                 reviews.map((review, index) => {
                   const matchingApplication = applications.find(application => 
-                    application.applicantID.user === review.applicantID.user._id &&
-                    application.applicantID.name === review.applicantID.user.name
+                    application.applicantID.user === review.applicantID.user._id 
                   );
                   if (matchingApplication) {
                     return (
