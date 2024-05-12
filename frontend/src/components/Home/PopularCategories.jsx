@@ -1,16 +1,14 @@
-import React from "react";
-import {
-  MdOutlineDesignServices,
-  MdOutlineWebhook,
-  MdAccountBalance,
-  MdOutlineAnimation,
-} from "react-icons/md";
-import { TbAppsFilled } from "react-icons/tb";
-import { FaReact } from "react-icons/fa";
-import { GiArtificialIntelligence } from "react-icons/gi";
-import { IoGameController } from "react-icons/io5";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Context } from "../../main";
+import { Card, Spinner } from "flowbite-react";
 
 const PopularCategories = () => {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { isAuthorized } = useContext(Context);
   const categories = [
     {
       id: 1,
@@ -61,22 +59,48 @@ const PopularCategories = () => {
       icon: <IoGameController />,
     },
   ];
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/v1/job/getall", { withCredentials: true });
+        const filteredJobs = response.data.jobs.filter(job => job.paid === true); // Filter out jobs where paid is false
+        const sortedJobs = filteredJobs.sort((a, b) => b.fixedSalary - a.fixedSalary); // Sort by salary in descending order
+        const topFourJobs = sortedJobs.slice(0, 4); // Take the first four jobs
+        setJobs(topFourJobs);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+    fetchJobs();
+  }, []);
+
   return (
-    <div className="categories bg-gray-100 py-8">
-      <div className="container mx-auto">
-        <h3 className="text-2xl font-semibold text-center mb-6">POPULAR CATEGORIES</h3>
+    <div className="categories h-screen bg-gradient-to-bl from-violet-100 to-teal-300 via-sky-200 py-8">
+      <div className="container mt-4 mx-auto">
+        <h3 className="text-2xl font-semibold text-center mb-10">POPULAR CATEGORIES</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.map((category) => (
-            <div key={category.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="p-6 flex items-center">
-                <div className="mr-4 text-blue-500 text-4xl">{category.icon}</div>
-                <div>
-                  <p className="text-lg font-semibold">{category.title}</p>
-                  <p className="text-sm text-gray-600">{category.subTitle}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+          {loading ? (
+            <Spinner color="blue" />
+          ) : error ? (
+            <p>Error loading categories: {error}</p>
+          ) : (
+            jobs.map((job) => (
+              <Link to={`/job/${job._id}`} key={job._id}>
+                <Card className="bg-gradient-to-tl from-slate-100 to-gray-200 via-zinc-300 rounded-lg shadow-md overflow-hidden">
+                  <div className="p-10 flex items-center">
+                    {/* Render job information here */}
+                    <div>
+                      <p className="text-lg font-semibold">{job.title}</p>
+                      <p className="text-sm text-gray-600">{job.category}</p>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>

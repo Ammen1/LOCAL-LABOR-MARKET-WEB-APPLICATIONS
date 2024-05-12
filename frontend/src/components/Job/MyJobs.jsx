@@ -80,13 +80,13 @@ const MyJobs = () => {
 
   const handlePayment = async (job) => {
     try {
-      const amount = job.salaryTo || 0;
+      // const amount = job.salaryTo || 0;
       const paymentData = {
         job: job._id,
         amount: job.fixedSalary,
         email: user.email,
         currency: "ETB",
-        first_name: user.name,
+        first_name: "AMEN",
         last_name: "Tamirat Ali Guda",
         tx_ref: "transaction_reference"
       };
