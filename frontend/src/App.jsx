@@ -21,6 +21,7 @@ import Dashboard from "./pages/Dashboard";
 import Footer from "./components/Footer";
 import MapWithUserLocation from "./components/Home/Map";
 import Tasker from "./components/Tasker";
+import MapContainer from "./pages/MapContainer";
 
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/job/post" element={<PostJob />} />
           <Route path="/job/me" element={<MyJobs />} />
+          <Route path="/mymap" element={<MapContainer />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
