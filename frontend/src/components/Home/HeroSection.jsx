@@ -32,8 +32,8 @@ const HeroSection = () => {
               your interests and skills
             </h2>
             <p className="text-gray-700 text-sm">
-              We would like to extend our heartfelt appreciation to our esteemed advisors at Jimma University,
-              Mr. Temesgen D. and Dr. Getachew M., for their unwavering guidance and invaluable insights.
+            The Local Labor Market Platform Development project responds to the dynamic needs of the gig 
+            economy by connecting experienced local workers in Jimma City with those seeking services
             </p>
           </div>
           <div className="flex space-x-4">
