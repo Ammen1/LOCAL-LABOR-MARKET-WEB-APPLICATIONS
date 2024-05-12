@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../main";
 import { Card, Spinner } from "flowbite-react";
+import { MdOutlineDesignServices,} from "react-icons/md";
 
 const PopularCategories = () => {
   const [jobs, setJobs] = useState([]);
@@ -16,48 +17,9 @@ const PopularCategories = () => {
       subTitle: "305 Open Positions",
       icon: <MdOutlineDesignServices />,
     },
-    {
-      id: 2,
-      title: "Mobile App Development",
-      subTitle: "500 Open Positions",
-      icon: <TbAppsFilled />,
-    },
-    {
-      id: 3,
-      title: "Frontend Web Development",
-      subTitle: "200 Open Positions",
-      icon: <MdOutlineWebhook />,
-    },
-    {
-      id: 4,
-      title: "MERN STACK Development",
-      subTitle: "1000+ Open Postions",
-      icon: <FaReact />,
-    },
-    {
-      id: 5,
-      title: "Account & Finance",
-      subTitle: "150 Open Positions",
-      icon: <MdAccountBalance />,
-    },
-    {
-      id: 6,
-      title: "Artificial Intelligence",
-      subTitle: "867 Open Positions",
-      icon: <GiArtificialIntelligence />,
-    },
-    {
-      id: 7,
-      title: "Video Animation",
-      subTitle: "50 Open Positions",
-      icon: <MdOutlineAnimation />,
-    },
-    {
-      id: 8,
-      title: "Game Development",
-      subTitle: "80 Open Positions",
-      icon: <IoGameController />,
-    },
+   
+   
+    
   ];
 
   useEffect(() => {
@@ -90,6 +52,7 @@ const PopularCategories = () => {
             jobs.map((job) => (
               <Link to={`/job/${job._id}`} key={job._id}>
                 <Card className="bg-gradient-to-tl from-slate-100 to-gray-200 via-zinc-300 rounded-lg shadow-md overflow-hidden">
+                  <MdOutlineDesignServices />
                   <div className="p-10 flex items-center">
                     {/* Render job information here */}
                     <div>
