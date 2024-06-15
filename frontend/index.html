@@ -5,58 +5,9 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>local labor market platform</title>
-
-    <style>
-      .language-button {
-        font-size: 4px; 
-        padding: 5px 8px; 
-        margin-right: 5px; 
-      }
-      #google_translate_element {
-        font-size: 1px;
-        padding: 1px 1px;
-        height: 5px;
-        border: 20px;
-        transition: visibility 0.5s; 
-      }
-      .translate-icon-container {
-        border-radius: 50%;
-      }
-    </style>
   </head>
   <body>
-    <script type="text/javascript">
-      let translateElement;
-      
-      function googleTranslateElementInit() {
-        translateElement = new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'en,am,om,ti,so', 
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-  
-        // Add event listeners to show/hide the button on hover
-        const translateButton = document.getElementById('google_translate_element');
-        translateButton.addEventListener('mouseover', () => {
-          translateButton.style.visibility = 'visible';
-        });
-        translateButton.addEventListener('mouseout', () => {
-          translateButton.style.visibility = 'hidden';
-        });
-      }
-      function changeLanguage(lang) {
-        if (translateElement) {
-          translateElement.changeLanguage(lang);
-        }
-      }
-    </script> 
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    
-    <!-- Container for Google Translate Button with circular styling -->
-    <div id="google_translate_element" class="translate-icon-container"></div>
-  
-    <!-- Your React App Script -->
+   
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>   
   </body>
