@@ -46,8 +46,8 @@ export default function DashLifecycle() {
   };
 
   return (
-    <div className="ml-5 items-center justify-center h-full table bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 rounded-lg shadow">
-      <div className="overflow-x-auto table mt-10  whitespace-nowrap rounded-lg shadow">
+    <div className="ml-5 items-center justify-center h-full ">
+      <div className="overflow-x-auto table mt-10 ml-10  whitespace-nowrap rounded-lg ">
         <table className="table-auto min-w-full divide-y divide-gray-200 ">
           <thead className="bg-gray-50 bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 hover:from-teal-600">
             <tr className="">
@@ -56,7 +56,7 @@ export default function DashLifecycle() {
               <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">City</th>
               <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Fixed Salary</th>
               <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Paid</th>
-              <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Posted By</th>
+              {/* <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Posted By</th> */}
               <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Posted On</th>
               <th className="px-4 py-2 text-left text-sm font-medium text-gray-900 uppercase">Delete</th>
             </tr>
@@ -69,7 +69,7 @@ export default function DashLifecycle() {
                 <td className="px-4 py-2 whitespace-nowrap">{job.city}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{job.fixedSalary}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{job.expired}</td>
-                <td className="px-4 py-2 whitespace-nowrap">{job.postedBy.name}</td>
+                {/* <td className="px-4 py-2 whitespace-nowrap">{job.postedBy.name}</td> */}
                 <td className="px-6 py-4 whitespace-nowrap">{moment(job.jobPostedOn).fromNow()}</td>
                 <td className='px-6 py-4 whitespace-nowrap'><Button
                       onClick={() => deleteApplication(job._id)}
