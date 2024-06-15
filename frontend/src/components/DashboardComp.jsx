@@ -123,9 +123,9 @@ export default function DashboardComp() {
   }
   
   return (
-    <div className="p-8 md:mx-auto shadow-md  translate-x-5 bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 ">
+    <div className="p-8 md:mx-auto   translate-x-5  ">
       <div className="flex-wrap flex gap-4 justify-center">
-        <div className="flex flex-col p-3  gap-4 rounded-md shadow-md">
+        <div className="flex flex-col p-3  gap-4 rounded-md ">
           <div className="flex justify-between">
             <div>
               <h3 className="text-gray-500 text-md uppercase">Total Users</h3>
