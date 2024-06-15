@@ -24,14 +24,15 @@ export default function DashSidebar() {
     navigateTo("/");
   }
   return (
-    <Sidebar className=" bg-gradient-to-b from-slate-100 to-purple-400 via-slate-300 ">
-      <Sidebar.Items>
-        <Sidebar.ItemGroup className="flex flex-col space-y-5 ">
+    <Sidebar className=" bg-slate-50">
+      <Sidebar.Items className="">
+        <Sidebar.ItemGroup className="flex flex-col space-y-3  ">
           <Link to="/dashboard?tab=dash">
             <Sidebar.Item
               active={tab === "dash" || !tab}
               icon={HiChartPie}
               as="div"
+              className=" bg-white"
             >
               Dashboard Component
             </Sidebar.Item>
