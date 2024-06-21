@@ -168,3 +168,14 @@ export const getTotalJobs = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
+exports.resetJobs = catchAsyncErrors(async (req, res, next) => {
+  try {
+    await Job.deleteMany({});
+    res.status(200).json({
+      success: true,
+      message: "All jobs deleted successfully.",
+    });
+  } catch (error) {
+    return next(new ErrorHandler("Internal Server Error", 500));
+  }
+});
