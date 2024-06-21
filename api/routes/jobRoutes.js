@@ -7,6 +7,7 @@ import {
   postJob,
   updateJob,
   getTotalJobs,
+  resetJobs,
 } from "../controllers/jobController.js";
 import { isAuthenticated } from "../middlewares/auth.js";
 
@@ -19,5 +20,5 @@ router.put("/update/:id", isAuthenticated, updateJob);
 router.delete("/delete/:id", isAuthenticated, deleteJob);
 router.get("/:id", isAuthenticated, getSingleJob);
 router.get("/getalljob", getTotalJobs);
-
+router.delete('/reset', resetJobs);
 export default router;
