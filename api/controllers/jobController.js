@@ -168,7 +168,7 @@ export const getTotalJobs = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-exports.resetJobs = catchAsyncErrors(async (req, res, next) => {
+export const resetJobs = catchAsyncErrors(async (req, res, next) => {
   try {
     await Job.deleteMany({});
     res.status(200).json({
