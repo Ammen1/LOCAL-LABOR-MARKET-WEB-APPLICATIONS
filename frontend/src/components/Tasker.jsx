@@ -132,7 +132,6 @@ export default function Tasker() {
                           <div className="text-sm ">
                           <div className="flex items-start">
                           <strong>Tasker Provider name:</strong>{" "}
-                          <span className="mr-1">{review.employerID.user.name}</span>
                         </div>
                             <div className="overflow-hidden">
                               {review.comment.length <= 500 ? review.comment : `${review.comment.slice(0, 500)}...`}
