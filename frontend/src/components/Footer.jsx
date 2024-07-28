@@ -2,9 +2,6 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 import { FiInstagram } from "react-icons/fi";
 import { footerLinks } from "../utils/data";
 import { Link } from "react-router-dom";
-import TextInput from "./TextInput";
-import CustomButton from "./CustomButton";
-
 const Footer = () => {
   return (
     <footer className='bg-gradient-to-r from-purple-400 to-purple-400 via-slate-300 mp-20 mt-4'>

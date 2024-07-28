@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { HiOutlineSearch } from 'react-icons/hi';
 import axios from 'axios';
-import { Button, Card, TextInput } from 'flowbite-react';
-import { MdEmail, MdPhone, MdLocationOn, MdSchool } from 'react-icons/md'; 
+import { Button, Card } from 'flowbite-react';
+import { MdEmail, MdPhone, MdLocationOn } from 'react-icons/md'; 
 import { FaStar } from 'react-icons/fa';
 
 export default function Tasker() {
@@ -14,7 +13,7 @@ export default function Tasker() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/api/v1/user/getuserss');
+        const response = await axios.get('https://local-labor-market-web-applications.onrender.com/api/v1/user/getuserss');
         const { data } = response;
         setUsers(data.users);
       } catch (error) {
@@ -27,7 +26,7 @@ export default function Tasker() {
 
   const fetchReviewsByJobSeekerIds = async (jobSeekerId) => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
+      const response = await axios.get(`https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews/${jobSeekerId}`);
       return response.data;
     } catch(error) {
       console.log("Error fetching reviews by job Seeker Ids:", error);
@@ -45,7 +44,7 @@ export default function Tasker() {
       const subject = prompt('Enter the subject of the job offer:');
       const message = prompt('Enter the message for the job offer:');
 
-      await axios.post("http://localhost:4000/api/v1/user/create-and-send-job-offer", {
+      await axios.post("https://local-labor-market-web-applications.onrender.com/api/v1/user/create-and-send-job-offer", {
         userId,
         subject,
         message,
@@ -119,12 +118,7 @@ export default function Tasker() {
                 <div className="flex items-center ">
                   <MdLocationOn className="text-black mr-2 text-xl" />
                   <p className="text-black text-sm">{user.location}</p>
-                </div>
-                {/* <div className="flex items-center ">
-                  <MdSchool className="text-black mr-2 text-xl" />
-                  <p className="text-black text-sm">{user.education}</p>
-                </div> */}
-                
+                </div>              
                 <h1 className="text-black mt-5">Reviews Count: {reviews[user._id] ? reviews[user._id].length : 0}</h1>
                 {reviews[user._id] && reviews[user._id].map((review, index) => (
                     <div key={index}>

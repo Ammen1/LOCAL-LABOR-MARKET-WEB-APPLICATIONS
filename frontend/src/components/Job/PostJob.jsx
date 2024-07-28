@@ -33,7 +33,7 @@ const PostJob = () => {
         ? { title, description, category, country, city, location, fixedSalary }
         : { title, description, category, country, city, location, salaryFrom, salaryTo };
 
-      const response = await axios.post("http://localhost:4000/api/v1/job/post", jobData, { withCredentials: true });
+      const response = await axios.post("https://local-labor-market-web-applications.onrender.com/api/v1/job/post", jobData, { withCredentials: true });
 
       if (response.data.success) {
         toast.success(response.data.message);

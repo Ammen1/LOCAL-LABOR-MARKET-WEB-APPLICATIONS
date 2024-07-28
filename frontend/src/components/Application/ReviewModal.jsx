@@ -34,7 +34,7 @@ const ReviewModal = ({ onClose, jobSeekerId, employerId }) => {
       };
 
       // Send the review data to the backend
-      const response = await axios.post("http://localhost:4000/api/v1/user/reviews", reviewData);
+      const response = await axios.post("https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews", reviewData);
 
       console.log("Review submitted successfully:", response.data);
 

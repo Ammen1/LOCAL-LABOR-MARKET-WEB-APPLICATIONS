@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { FaCheck, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { Button } from "flowbite-react";
 
@@ -13,7 +12,7 @@ export default function DashUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/user/getuserss");
+        const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/user/getuserss");
         const { data } = response;
         console.log("Fetched users data:", data);
         setUsers(data.users);
@@ -27,9 +26,9 @@ export default function DashUsers() {
 
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`http://localhost:4000/api/v1/user/delete/${id}`);
+      await axios.delete(`https://local-labor-market-web-applications.onrender.com/api/v1/user/delete/${id}`);
       setUsers(users.filter(user => user._id !== id));
-      setShowConfirmModal(false); // Close the modal after successful deletion
+      setShowConfirmModal(false); 
     } catch (error) {
       console.error("Error deleting user:", error);
     }

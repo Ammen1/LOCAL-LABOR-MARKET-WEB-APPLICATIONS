@@ -24,7 +24,7 @@ const Application = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/v1/user/reviews`, {
+        const response = await axios.get(`https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews`, {
           withCredentials: true,
         });
         setReviews(response.data);

@@ -20,8 +20,8 @@ const Jobs = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/job/getall", { withCredentials: true });
-        const filteredJobs = response.data.jobs.filter(job => job.paid === true); // Filter out jobs where paid is false
+        const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/job/getall", { withCredentials: true });
+        const filteredJobs = response.data.jobs.filter(job => job.paid === true); 
         setJobs(filteredJobs);
         setLoading(false);
       } catch (error) {

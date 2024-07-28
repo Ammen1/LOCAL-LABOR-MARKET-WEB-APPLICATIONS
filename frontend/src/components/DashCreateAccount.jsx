@@ -15,14 +15,14 @@ export default function DashCreateAccount() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [headline, setHeadline] = useState(""); // Additional profile field
-  const [experience, setExperience] = useState(""); // Additional profile field
-  const [skills, setSkills] = useState(""); // Additional profile field
-  const [education, setEducation] = useState(""); // Additional profile field
-  const [location, setLocation] = useState(""); // Additional profile field
-  const [linkedin, setLinkedin] = useState(""); // Additional profile field
-  const [github, setGithub] = useState(""); // Additional profile field
-  const [portfolio, setPortfolio] = useState(""); // Additional profile field
+  const [headline, setHeadline] = useState("");
+  const [experience, setExperience] = useState("");
+  const [skills, setSkills] = useState(""); 
+  const [education, setEducation] = useState(""); 
+  const [location, setLocation] = useState(""); 
+  const [linkedin, setLinkedin] = useState(""); 
+  const [github, setGithub] = useState(""); 
+  const [portfolio, setPortfolio] = useState(""); 
   const [resume, setResume] = useState("");
 
   const { isAuthorized, setIsAuthorized } = useContext(Context);
@@ -58,14 +58,13 @@ export default function DashCreateAccount() {
       formData.append("portfolio", portfolio);
       
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        "https://local-labor-market-web-applications.onrender.com/api/v1/user/register",
         formData,
         {
           withCredentials: true,
         }
       );
       toast.success(data.message);
-      // Clear form fields after successful registration
       setName("");
       setEmail("");
       setPassword("");

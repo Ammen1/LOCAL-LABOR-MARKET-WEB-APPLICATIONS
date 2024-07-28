@@ -15,11 +15,10 @@ export default function AdminReviews() {
   }, []);
 
   useEffect(() => {
-    setFilteredReviews(reviews); // Initialize filteredReviews with all reviews initially
+    setFilteredReviews(reviews); 
   }, [reviews]);
 
   useEffect(() => {
-    // Filter reviews based on search query
     const filtered = reviews.filter((review) =>
       review.employerID && review.employerID.user
         ? review.employerID.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -43,7 +42,7 @@ export default function AdminReviews() {
 
   const fetchAllReviews = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
+      const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews");
       const { data } = response;
       setReviews(data);
     } catch (error) {

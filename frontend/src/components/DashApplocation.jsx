@@ -12,7 +12,7 @@ export default function DashApplocation() {
   useEffect(() => {
     const fetchApplications = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/application/applications");
+        const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/application/applications");
         const { data } = response;
         if (data && data.success && Array.isArray(data.applications)) {
           setApplications(data.applications);
@@ -30,16 +30,14 @@ export default function DashApplocation() {
   const deleteApplication = async (id) => {
     if (user && user.role === "Job Seeker") {
       try {
-        await axios.delete(`http://localhost:4000/api/v1/application/delete/${id}`, {
+        await axios.delete(`https://local-labor-market-web-applications.onrender.com/api/v1/application/delete/${id}`, {
           withCredentials: true,
         });
   
-        // Update applications state after deleting the application
         setApplications(applications.filter(app => app._id !== id));
   
         toast.success("Application deleted successfully!");
       } catch (error) {
-        // Handle errors properly
         if (error.response && error.response.data && error.response.data.message) {
           toast.error(error.response.data.message);
         } else {
@@ -49,7 +47,6 @@ export default function DashApplocation() {
     }
   };
 
-// Filter applications based on search query
 const filteredApplications = applications.filter(application => {
   return (
     application.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

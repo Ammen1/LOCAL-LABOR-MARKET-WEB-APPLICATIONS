@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
-import { FaRegUser, FaPencilAlt, FaPhoneAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { RiLock2Fill } from "react-icons/ri";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Context } from "../../main";
-import { Button, TextInput } from "flowbite-react";
+import { Button,} from "flowbite-react";
 import { AiOutlineLock } from "react-icons/ai";
 import "./Register.css";
 
@@ -77,7 +77,7 @@ const Register = () => {
       formData.append("portfolio", portfolio);
       
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/user/register",
+        "https://local-labor-market-web-applications.onrender.com/api/v1/user/register",
         formData,
         {
           withCredentials: true,

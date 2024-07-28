@@ -25,10 +25,10 @@ const PopularCategories = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/v1/job/getall", { withCredentials: true });
-        const filteredJobs = response.data.jobs.filter(job => job.paid === true); // Filter out jobs where paid is false
-        const sortedJobs = filteredJobs.sort((a, b) => b.fixedSalary - a.fixedSalary); // Sort by salary in descending order
-        const topFourJobs = sortedJobs.slice(0, 4); // Take the first four jobs
+        const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/job/getall", { withCredentials: true });
+        const filteredJobs = response.data.jobs.filter(job => job.paid === true); 
+        const sortedJobs = filteredJobs.sort((a, b) => b.fixedSalary - a.fixedSalary); 
+        const topFourJobs = sortedJobs.slice(0, 4); 
         setJobs(topFourJobs);
         setLoading(false);
       } catch (error) {

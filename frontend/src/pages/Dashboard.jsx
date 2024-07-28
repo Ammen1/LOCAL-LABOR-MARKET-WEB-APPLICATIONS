@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSibar";
-// import DashProfile from "../components/DashProfile";
-// import DashPosts from "../components/DashPosts";
-// import DashUsers from "../components/DashUsers";
 import DashboardComp from "../components/DashboardComp";
 import DashCreateAccount from "../components/DashCreateAccount";
 import DashUsers from "../components/DashUsers";
@@ -26,7 +23,6 @@ export default function Dashboard() {
   return (
     <div className=" flex flex-col md:flex-row ">
       <div className=" ">
-        {/* Sidebar */}
         <DashSidebar />
       </div>
   

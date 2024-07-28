@@ -16,7 +16,7 @@ const ChapaPaymentForm = ({ email, fixedSalary, tx_ref }) => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/job/getmyjobs",
+          "https://local-labor-market-web-applications.onrender.com/api/v1/job/getmyjobs",
           { withCredentials: true }
         );
         setMyJobs(data.myJobs);
@@ -31,7 +31,7 @@ const ChapaPaymentForm = ({ email, fixedSalary, tx_ref }) => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/job/update/${jobId}`, updatedJob, { withCredentials: true });
+      const response = await axios.put(`https://local-labor-market-web-applications.onrender.com/api/v1/job/update/${jobId}`, updatedJob, { withCredentials: true });
       response.paid = true
       toast.success(response.data.message);
     } catch (error) {
@@ -41,18 +41,17 @@ const ChapaPaymentForm = ({ email, fixedSalary, tx_ref }) => {
 
   const handlePaymentSuccess = async (jobId, userId) => {
     try {
-      const response = await axios.post('http://localhost:4000/chapa-callback', { jobId, userId });
-      handleUpdateJob(jobId); // Pass jobId to the function
+      const response = await axios.post('https://local-labor-market-web-applications.onrender.com/api/v1/chapa-callback', { jobId, userId });
+      handleUpdateJob(jobId);
       console.log('Payment status updated successfully:', response.data);
     } catch (error) {
       console.error('Error updating payment status:', error.response.data.message);
-      // Handle error
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handlePaymentSuccess(tx_ref, user._id); // Pass tx_ref and user._id to the function
+    handlePaymentSuccess(tx_ref, user._id); 
     document.getElementById('chapa-payment-form').submit();
   };
 
@@ -67,10 +66,10 @@ const ChapaPaymentForm = ({ email, fixedSalary, tx_ref }) => {
       <input type="hidden" name="first_name" value="FirstName" /> 
       <input type="hidden" name="last_name" value="LastName" /> 
       <input type="hidden" name="title" value="Job Title" /> 
-      <input type="hidden" name="description" value="Job Description" /> {/* Update with actual job description */}
+      <input type="hidden" name="description" value="Job Description" /> 
       <input type="hidden" name="logo" value="https://chapa.link/asset/images/chapa_swirl.svg" />
-      <input type="hidden" name="callback_url" value="http://localhost:5173/job/me" />
-      <input type="hidden" name="return_url" value="http://localhost:5173/job/me" />
+      <input type="hidden" name="callback_url" value="https://local-labor-market-web-applications.onrender.com/api/v1/job/me" />
+      <input type="hidden" name="return_url" value="https://local-labor-market-web-applications.onrender.com/api/v1/job/me" />
       <input type="hidden" name="meta[title]" value="test" />
       <Button  className=" bg-gradient-to-r to-pink-500 from-violet-700 via-indigo-500" type="submit" onClick={handleSubmit}>Pay Now</Button>
     </form>

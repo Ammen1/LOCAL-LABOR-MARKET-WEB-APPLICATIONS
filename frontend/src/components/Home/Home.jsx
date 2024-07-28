@@ -17,7 +17,6 @@ const Home = () => {
     <>
       <section className="">
         <HeroSection />
-        {/* <Map/> */}
         <HowItWorks />
         <PopularCategories />
       </section>

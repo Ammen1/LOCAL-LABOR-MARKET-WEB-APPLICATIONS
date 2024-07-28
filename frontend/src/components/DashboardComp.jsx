@@ -7,8 +7,6 @@ import {
   HiOutlineQuestionMarkCircle,
   HiOutlineUserGroup,
 } from "react-icons/hi";
-import { Button, Table } from "flowbite-react";
-import { Link } from "react-router-dom";
 
 export default function DashboardComp() {
   const [user, setUser] = useState(null);
@@ -23,7 +21,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchJobSeekers = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/user/getjobseekers");
+        const response = await fetch("https://local-labor-market-web-applications.onrender.com/api/v1/user/getjobseekers");
         const data = await response.json();
         if (data.success) {
           setTotalJobSeekerUsers(data.totalJobSeekerUsers);
@@ -41,7 +39,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/user/getbemployee");
+        const response = await fetch("https://local-labor-market-web-applications.onrender.com/api/v1/user/getbemployee");
         const data = await response.json();
         if (data.success) {
           setTotalEmployees(data.totalEmployees);
@@ -59,7 +57,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/user/getusers");
+        const response = await fetch("https://local-labor-market-web-applications.onrender.com/api/v1/user/getusers");
         const data = await response.json();
         if (data.success) {
           setUser(data.user);
@@ -79,7 +77,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchTotalJobs = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/job/getall");
+        const response = await fetch("hhttps://local-labor-market-web-applications.onrender.com/api/v1/job/getall");
         const data = await response.json();
         if (data.success) {
           setTotalJobs(data.totalJobsCount);
@@ -98,7 +96,7 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchTotalApplications = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api/v1/application/applications");
+        const response = await fetch("https://local-labor-market-web-applications.onrender.com/api/v1/application/applications");
         if (!response.ok) {
           throw new Error("Failed to fetch total applications");
         }

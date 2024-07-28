@@ -18,8 +18,8 @@ const MyApplications = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [resumeImageUrl, setResumeImageUrl] = useState("");
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [selectedApplicantID, setSelectedApplicantID] = useState(null); // Rename to selectedApplicantID
-  const [reviews, setReviews] = useState([]); // New state to store reviews
+  const [selectedApplicantID, setSelectedApplicantID] = useState(null); 
+  const [reviews, setReviews] = useState([]);
   const [review, setReview] = useState([])
   const [jobSeekerId, setJobSeekerId] = useState("");
   const [jobSeekerData, setJobSeekerData] = useState(null);
@@ -39,7 +39,7 @@ console.log("application", application)
 
   const fetchApplications = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
+      const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews");
       const  data = response.data
       setApplication(data)
     } catch(error) {
@@ -49,7 +49,7 @@ console.log("application", application)
 
   const fetchAllReviews = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/api/v1/user/reviews");
+      const response = await axios.get("https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews");
       const  data  = response.data;
       setReviews(data);
     } catch (error) {
@@ -85,7 +85,7 @@ useEffect(() => {
           endpoint = "application/jobseeker/getall";
         }
 
-        const response = await axios.get(`http://localhost:4000/api/v1/${endpoint}`, {
+        const response = await axios.get(`https://local-labor-market-web-applications.onrender.com/api/v1/${endpoint}`, {
           withCredentials: true,
           
         });
@@ -102,7 +102,7 @@ useEffect(() => {
   const deleteApplication = async (id) => {
     if (user && user.role === "Job Seeker") {
       try {
-        await axios.delete(`http://localhost:4000/api/v1/application/delete/${id}`, {
+        await axios.delete(`https://local-labor-market-web-applications.onrender.com/api/v1/application/delete/${id}`, {
           withCredentials: true,
         });
 
@@ -128,11 +128,11 @@ useEffect(() => {
   const fetchReviewsByJobSeekerIds = async (jobSeekerIds) => {
     try {
       const reviewsPromises = jobSeekerIds.map(async (jobSeekerId) => {
-        const response = await axios.get(`http://localhost:4000/api/v1/user/reviews/${jobSeekerId}`);
+        const response = await axios.get(`https://local-labor-market-web-applications.onrender.com/api/v1/user/reviews/${jobSeekerId}`);
         return response.data;
       });
-      const reviewsData = await Promise.all(reviewsPromises); // Wait for all promises to resolve
-      setReview(reviewsData.flat()); // Flatten the array of arrays into a single array of reviews
+      const reviewsData = await Promise.all(reviewsPromises); 
+      setReview(reviewsData.flat());
     } catch (error) {
       console.error("Error fetching reviews by Job Seeker IDs:", error);
     }
@@ -169,7 +169,7 @@ useEffect(() => {
 
   const handleAccept = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/application/applications/${id}/accept`);
+      const response = await axios.put(`https://local-labor-market-web-applications.onrender.com/api/v1/application/applications/${id}/accept`);
       console.log(response.data);
       toast.success("Application accepted successfully!");
     } catch (error) {
@@ -179,7 +179,7 @@ useEffect(() => {
 
   const handleReject = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/application/applications/${id}/reject`);
+      const response = await axios.put(`https://local-labor-market-web-applications.onrender.com/api/v1/application/applications/${id}/reject`);
       console.log(response.data);
       toast.success("Application rejected successfully!");
     } catch (error) {
@@ -189,7 +189,7 @@ useEffect(() => {
 
   const paymentApproval = async (id) => {
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/application/applications/${id}/paymentApproval`);
+      const response = await axios.put(`https://local-labor-market-web-applications.onrender.com/api/v1/application/applications/${id}/paymentApproval`);
       console.log(response.data);
       toast.success("Application paymentApproval successfully!");
     } catch (error) {

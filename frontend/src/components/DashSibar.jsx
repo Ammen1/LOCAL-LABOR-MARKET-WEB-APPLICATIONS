@@ -1,5 +1,5 @@
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiHeart, HiAnnotation, HiChartPie, HiPlus, HiOutlinePlay, HiPlay, HiOutlinePaperAirplane } from "react-icons/hi";
+import { HiUser, HiHeart, HiAnnotation, HiChartPie, HiPlus, HiPlay, HiOutlinePaperAirplane } from "react-icons/hi";
 import { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Context } from "../main";

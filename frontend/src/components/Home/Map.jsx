@@ -36,12 +36,10 @@ const MapWithUserLocation = () => {
   const saveLocationToDatabase = async () => {
     try {
       const [latitude, longitude] = userLocation;
-      const response = await axios.post('http://localhost:4000/api/v1/pin', { latitude, longitude, locationName });
+      const response = await axios.post('https://local-labor-market-web-applications.onrender.com/api/v1/pin', { latitude, longitude, locationName });
       console.log('Location saved:', response.data);
-      // Handle success, e.g., show a success message to the user
     } catch (error) {
       console.error('Error saving location:', error);
-      // Handle error, e.g., show an error message to the user
     }
   };
 

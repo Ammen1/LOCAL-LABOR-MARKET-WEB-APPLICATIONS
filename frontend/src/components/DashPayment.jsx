@@ -7,7 +7,7 @@ export default function DashPayment() {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/transactions');
+        const response = await axios.get('https://local-labor-market-web-applications.onrender.com/api/v1/transactions');
         setTransactions(response.data);
       } catch (error) {
         console.error('Error fetching transactions:', error);
@@ -26,7 +26,6 @@ export default function DashPayment() {
               <th className="px-4 py-2">Transaction ID</th>
               <th className="px-4 py-2">Job ID</th>
               <th className="px-4 py-2">Email</th>
-              {/* <th className="px-4 py-2">Name</th> */}
               <th className="px-4 py-2">Currency</th>
               <th className="px-4 py-2">Amount</th>
               <th className="px-4 py-2">Status</th>
@@ -37,7 +36,6 @@ export default function DashPayment() {
               <tr key={transaction._id} className="hover:bg-gray-100">
                 <td className="px-4 py-3">{transaction._id}</td>
                 <td className="px-4 py-3">{transaction.job.title}</td>
-                {/* <td className="px-4 py-3">{transaction.email}</td> */}
                 <td className="px-4 py-3">{transaction.first_name}</td>
                 <td className="px-4 py-3">{transaction.currency}</td>
                 <td className="px-4 py-3">{transaction.amount}</td>

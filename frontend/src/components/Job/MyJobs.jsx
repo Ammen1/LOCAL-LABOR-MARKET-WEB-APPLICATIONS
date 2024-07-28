@@ -24,7 +24,7 @@ const MyJobs = () => {
     const fetchJobs = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/job/getmyjobs",
+          "https://local-labor-market-web-applications.onrender.com/api/v1/job/getmyjobs",
           { withCredentials: true }
         );
         console.log(data)
@@ -52,7 +52,7 @@ const MyJobs = () => {
   const handleUpdateJob = async (jobId) => {
     const updatedJob = myJobs.find((job) => job._id === jobId);
     try {
-      const response = await axios.put(`http://localhost:4000/api/v1/job/update/${jobId}`, updatedJob, { withCredentials: true });
+      const response = await axios.put(`https://local-labor-market-web-applications.onrender.com/api/v1/job/update/${jobId}`, updatedJob, { withCredentials: true });
       toast.success(response.data.message);
       setEditingMode(null);
     } catch (error) {
@@ -62,7 +62,7 @@ const MyJobs = () => {
 
   const handleDeleteJob = async (jobId) => {
     try {
-      const response = await axios.delete(`http://localhost:4000/api/v1/job/delete/${jobId}`, { withCredentials: true });
+      const response = await axios.delete(`https://local-labor-market-web-applications.onrender.com/api/v1/job/delete/${jobId}`, { withCredentials: true });
       toast.success(response.data.message);
       setMyJobs((prevJobs) => prevJobs.filter((job) => job._id !== jobId));
     } catch (error) {
@@ -80,7 +80,6 @@ const MyJobs = () => {
 
   const handlePayment = async (job) => {
     try {
-      // const amount = job.salaryTo || 0;
       const paymentData = {
         job: job._id,
         amount: job.fixedSalary,
@@ -91,7 +90,7 @@ const MyJobs = () => {
         tx_ref: "transaction_reference"
       };
   
-      const response = await axios.post('http://localhost:4000/transactions/initiate', paymentData);
+      const response = await axios.post('https://local-labor-market-web-applications.onrender.com/transactions/initiate', paymentData);
   
       if (response.data.detail && response.data.detail.status === "success") {
         const checkoutUrl = response.data.detail.data.checkout_url;
@@ -117,7 +116,6 @@ const MyJobs = () => {
               <ReactCountryFlag countryCode="ET" svg /> {job.country}
             </h2>
                 <h2 className="text-sm font-semibold mb-4">location: {job.location}</h2>
-                {/* <h2 className="text-sm font-semibold  mb-4"></h2> */}
                 <TextInput
                     type="text"
                     className="ml-2 focus:outline-none"
