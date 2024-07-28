@@ -30,7 +30,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "https://local-labor-market-web-applications.onrender.com//api/v1/user/getuser",
+          "https://local-labor-market-web-applications.onrender.com/api/v1/user/getuser",
           {
             withCredentials: true,
           }
